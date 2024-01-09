@@ -1,0 +1,46 @@
+# Byte-compiled / optimized / DLL files
+.idea/
+__pycache__/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+site/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+poetry-installer-error-hpmnf456.log
+
+# Environments
+.env
+.venv*
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# LOCAL
+promptique.egg-info/
+
+# ignore virtualization
+.python-version
+
+# ignore coverage file
+.coverage
+
+# keep mandatory empty directories
+!.gitdontignore

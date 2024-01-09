@@ -1,0 +1,138 @@
+[build-system]
+requires = ["setuptools>=42", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "promptique"
+dynamic = ["version"]
+description = "Effortlessly build interactive command line applications."
+readme = "README.md"
+requires-python = ">= 3.9"
+license = {file = "LICENSE"}
+authors = [
+    {name = "boonhapus", email="me@boonhap.us"},
+]
+maintainers = [
+    {name = "boonhapus", email="me@boonhap.us"},
+]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "prompt_toolkit",
+    "pydantic",
+    "rich",
+]
+
+[project.urls]
+homepage = "https://github.com/boonhapus/promptique"
+repository = "https://github.com/boonhapus/promptique"
+bug_tracker = "https://github.com/boonhapus/promptique/issues"
+documentation = "https://github.com/boonhapus/promptique"
+
+[project.optional-dependencies]
+dev = [
+    # Code Quality
+    "pre-commit",
+    "taskipy",
+    "ruff",
+    "mypy",
+    "vulture",
+
+    # Testing
+    "nox",
+    "pytest",
+    "coverage[toml]",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "promptique.__project__.__version__"}
+
+[tool.mypy]
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+check_untyped_defs = true
+strict_equality = true
+strict_concatenate = true
+
+[tool.ruff]
+line-length = 120
+select = [
+    "A",     # flake8-builtins: https://pypi.org/project/flake8-builtins/
+    "ARG",   # flake8-unused-arguments: https://pypi.org/project/flake8-unused-arguments/
+    "B",     # flake8-bugbear: https://pypi.org/project/flake8-bugbear/
+    "C4",    # flake8-comprehensions: https://pypi.org/project/flake8-comprehensions/
+    "COM",   # flake8-commas: https://pypi.org/project/flake8-commas/
+    "DTZ",   # flake8-datetimez: https://pypi.org/project/flake8-datetimez/
+    "E",     # pycodestyle: https://pypi.org/project/pycodestyle/
+    "F",     # pyflakes: https://pypi.org/project/pyflakes/
+    "FA",    # flake8-future-annotations: https://pypi.org/project/flake8-future-annotations/
+    "I",     # isort: https://pypi.org/project/isort/
+    "Q",     # flake8-quotes: https://pypi.org/project/flake8-quotes/
+    "RUF",   # ruff-specific: https://beta.ruff.rs/docs/rules/#ruff-specific-rules-ruf
+    "T20",   # flake8-print: https://pypi.org/project/flake8-print/
+    "TCH",   # flake8-type-checking: https://pypi.org/project/flake8-type-checking/
+]
+src = ["src", "tests"]
+exclude = [
+    "__pycache__",   # ignore compiled bytecode
+    ".venv*",        # ignore virtual environments
+    ".nox",          # ignore virtual environments
+
+    # project specific ignores
+    "__init__.py",     # ignore __init__.py
+    "__project__.py",  # ignore project metadata
+    "_compat.py",      # ignore compatibles
+    "const.py",        # ignore constants
+    "noxfile.py",
+    "setup.py",
+]
+ignore-init-module-imports = true
+
+[flake8]
+type-checking-pydantic-enabled = true
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+from-first = true
+required-imports = ["from __future__ import annotations"]
+
+[tool.taskipy.tasks]
+develop = "python -m pip install -e .[dev]"
+
+lint = "task lint_dead && lint_check && task lint_format"
+lint_dead = "vulture --min-confidence 100"
+lint_check = "ruff check --config pyproject.toml"
+lint_format = "ruff format --config pyproject.toml"
+
+[tool.vulture]
+paths = ["src"]
+
+# [tool.coverage.run]
+# branch = true
+# include = [
+#     "promptique/**.py",
+# ]
+
+# [tool.coverage.report]
+# exclude_lines = [
+#     "# pragma: no cover",
+#     "# pragma: peephole optimzer",
+#     "raise NotImplementedError",
+#     "if __name__ == .__main__.:",
+#     "if TYPE_CHECKING:",
+#     "if typing.TYPE_CHECKING:",
+# ]
