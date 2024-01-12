@@ -53,6 +53,7 @@ dev = [
     # Testing
     "nox",
     "pytest",
+    "pytest-asyncio",
     "coverage[toml]",
 ]
 
