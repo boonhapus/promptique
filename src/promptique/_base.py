@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from types import TracebackType
-from typing import Optional, Self
+from typing import Optional
 import logging
 import uuid
 
@@ -13,6 +13,7 @@ from rich.styled import Styled
 from rich.text import Text
 import pydantic
 
+from promptique._compat import Self
 from promptique.types import PromptStatus
 
 log = logging.getLogger(__name__)

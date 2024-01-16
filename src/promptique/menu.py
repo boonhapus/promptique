@@ -33,8 +33,8 @@ class Menu:
         transient: bool = False,
         theme: Optional[PromptTheme] = None,
     ):
-        intro = Note(prompt=intro) if isinstance(intro, str) else intro  # type: ignore[assignment]
-        outro = Note(prompt=outro) if isinstance(outro, str) else outro  # type: ignore[assignment]
+        intro = Note(id="intro", prompt=intro) if isinstance(intro, str) else intro  # type: ignore[assignment]
+        outro = Note(id="outro", prompt=outro) if isinstance(outro, str) else outro  # type: ignore[assignment]
         self.has_outro = outro is not None
         self.prompts: list[BasePrompt] = [p for p in (intro, *prompts, outro) if isinstance(p, BasePrompt)]
         self.console = Console() if console is None else console
