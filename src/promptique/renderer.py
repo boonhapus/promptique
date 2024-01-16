@@ -13,9 +13,17 @@ from promptique.types import PromptPosition
 
 class PromptRenderer:
     """
-    Prompts in the menu have a left hand rail.
+    Wrap prompt rendering so that they fit into a menu.
 
-    A renderer simply allows prompts to be rendered.
+    To implement, simply
+
+    The default PromptRenderer will place a marker in front of the first line
+    in a prompt, and a rail on every other line. The first and last lines of
+    the menu as a whole will have overridden markers as well.
+
+    a. The first marker will be overriden with a top-wrap character.
+    b. The prompt marker will take the theme style.
+    e. The last marker will be overriden with a bottom-wrap character.
 
       a. The first prompt in the menu will have a null-styled opening marker.
       b. All Prompts will have a .style'd status indicator shown at all times.
@@ -41,26 +49,45 @@ class PromptRenderer:
           ...
           │
     E --> └ Complete!
+
+    Attributes
+    ----------
+    prompt: BasePrompt
+      ...
+
+    position: PromptPosition
+      ...
     """
 
     MENU_RAIL_BEG = "┌"
     MENU_RAIL_BAR = "│"
     MENU_RAIL_END = "└"
 
-    def __init__(self, prompt: BasePrompt, position: PromptPosition = "MIDDLE", theme: Optional[PromptTheme] = None):
+    def __init__(self, prompt: BasePrompt, position: PromptPosition, theme: Optional[PromptTheme] = None):
         self.prompt = prompt
-        self.padding_width = 2
         self.position = position
         self.theme = PromptTheme() if theme is None else theme
 
+    @property
+    def max_marker_width(self) -> int:
+        """Find the length of the longest marker on a prompt."""
+        return len(self.prompt._marker or self.theme[self.prompt.status].marker)
+
     def determine_rail_marker(self, is_first_line: bool) -> str:
         """ """
-        marker = {
-            "FIRST": PromptRenderer.MENU_RAIL_BEG,
-            "MIDDLE": self.prompt._marker or self.theme[self.prompt.status].marker,
-            "LAST": PromptRenderer.MENU_RAIL_END,
-        }
-        return marker[self.position] if is_first_line else PromptRenderer.MENU_RAIL_BAR
+        if self.position == "FIRST":
+            marker = PromptRenderer.MENU_RAIL_BEG
+
+        elif self.position == "LAST" and not self.prompt.is_active:
+            marker = PromptRenderer.MENU_RAIL_END
+
+        elif is_first_line:
+            marker = self.prompt._marker or self.theme[self.prompt.status].marker
+
+        else:
+            marker = PromptRenderer.MENU_RAIL_BAR
+
+        return marker
 
     def determine_rail_style(self, is_first_line: bool) -> Style:
         """ """
@@ -95,12 +122,13 @@ class PromptRenderer:
 
         return style
 
-    def __rich_console__(self, console, options):
+    def __rich_console__(self, console: Console, options: ConsoleOptions):
         NULL_STYLE = Style.null()
 
-        render_options = options.update(max_width=options.max_width - self.padding_width)
+        render_options = options.update(max_width=options.max_width - self.max_marker_width)
         lines = console.render_lines(self.prompt, render_options, pad=False)
 
+        # Add the │ prior to creating the prompt, this is our gap character.
         if not self.position == "FIRST":
             yield PromptRenderer.MENU_RAIL_BAR
 
@@ -109,7 +137,6 @@ class PromptRenderer:
             marker_style = self.determine_rail_style(is_first_line)
             line_style = self.determine_line_style(is_first_line)
 
-            # assert len(marker) == 1
             yield Segment(text=f"{marker} ", style=marker_style)
             yield from Segment.apply_style(line, style=NULL_STYLE, post_style=line_style)
             yield Segment("\n")
