@@ -3,17 +3,28 @@ from __future__ import annotations
 from typing import Any, Callable, Optional, Union
 import asyncio
 import collections
-import inspect
+import datetime as dt
 import logging
 
-from prompt_toolkit.input import create_input, Input
-from prompt_toolkit.key_binding import KeyPress  # noqa: TCH002
+from prompt_toolkit.input import Input, create_input
+from prompt_toolkit.key_binding import KeyPress
 import pydantic
 
 from promptique import _utils
-from promptique.keys import Keys, KeyPressContext
+from promptique.keys import Keys
 
 log = logging.getLogger(__name__)
+
+
+class KeyPressContext(pydantic.BaseModel, arbitrary_types_allowed=True):
+    """Metadata about a KeyPress."""
+
+    key_press: KeyPress
+    keyboard: KeyboardListener
+    when: pydantic.AwareDatetime = pydantic.Field(default_factory=dt.datetime.utcnow)
+
+    def __str__(self) -> str:
+        return f"<KeyPressContext key={self.key_press.key}, when='{self.when:%H:%M:%S.%f}'>"
 
 
 class KeyboardListener:
@@ -40,26 +51,16 @@ class KeyboardListener:
         if hooks is None:
             return
 
-        ctx = KeyPressContext(key_press=key_press)
+        ctx = KeyPressContext(key_press=key_press, keyboard=self)
 
         for hook in hooks:
-            task = asyncio.create_task(self._invoke(hook, ctx))
+            task = asyncio.create_task(_utils.invoke(hook, ctx))
             task.add_done_callback(lambda t: self._active_hooks.discard(t))
             self._active_hooks.add(task)
 
-    async def _invoke(self, hook: Callable[[KeyPressContext], Any], *params) -> Any:
-        """Invoke a keybound callback."""
-        parameter_count = _utils.count_parameters(hook)
-        result = hook(*params[:parameter_count])
-
-        if inspect.isawaitable(result):
-            result = await result
-
-        return result
-
-    def add_binding(self, key: Keys, callback: Callable) -> None:
+    def bind(self, key: Keys, fn: Callable) -> None:
         """Add a callback to a key press."""
-        self._key_hooks[key].append(callback)
+        self._key_hooks[key].append(fn)
 
     def simulate(self, key: Union[Keys, str]) -> None:
         """Pretend to press a key."""
@@ -74,7 +75,7 @@ class KeyboardListener:
         self._is_accepting_keys = True
 
         if not ignore_control_c:
-            self.add_binding(Keys.ControlC, callback=self.stop)
+            self.bind(Keys.ControlC, fn=self.stop)
 
         self._input_pipe = create_input()
         self._background_done = asyncio.Event()
@@ -83,6 +84,7 @@ class KeyboardListener:
             """Engage prompt_toolkit to listen for keys cross-platform."""
             assert self._input_pipe is not None, "KeyboardListener has not yet been started"
             for key_press in self._input_pipe.read_keys():
+                # key_press = KeyPress.from_ptk_keypress(key_press)
                 self._trigger_hooks(key_press)
 
         with self._input_pipe.raw_mode():
@@ -115,5 +117,5 @@ if __name__ == "__main__":
     log = logging.getLogger(__name__)
 
     kb = KeyboardListener()
-    kb.add_binding(key=Keys.Any, callback=lambda ctx: log.info(ctx))
+    kb.bind(key=Keys.Any, fn=lambda ctx: log.info(ctx))
     kb.run()
