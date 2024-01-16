@@ -4,6 +4,7 @@ from typing import Any, Callable, Optional, Union
 import asyncio
 import collections
 import datetime as dt
+import functools as ft
 import logging
 
 from prompt_toolkit.input import Input, create_input
@@ -58,8 +59,10 @@ class KeyboardListener:
             task.add_done_callback(lambda t: self._active_hooks.discard(t))
             self._active_hooks.add(task)
 
-    def bind(self, key: Keys, fn: Callable) -> None:
+    def bind(self, key: Keys, fn: Callable, **kw) -> None:
         """Add a callback to a key press."""
+        if kw:
+            fn = ft.partial(fn, **kw)
         self._key_hooks[key].append(fn)
 
     def simulate(self, key: Union[Keys, str]) -> None:
