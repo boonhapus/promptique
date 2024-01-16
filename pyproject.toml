@@ -102,8 +102,9 @@ exclude = [
 ]
 ignore-init-module-imports = true
 
-[flake8]
-type-checking-pydantic-enabled = true
+[tool.ruff.lint.flake8-type-checking]
+runtime-evaluated-base-classes = ["pydantic.BaseModel"]
+strict = true
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
