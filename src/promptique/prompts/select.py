@@ -20,6 +20,7 @@ class PromptOption(pydantic.BaseModel):
     description: Optional[str] = None
     is_selected: bool = False
     is_highlighted: bool = False
+    hotkey: Optional[str] = None
 
     def toggle(self) -> None:
         """Flip the value of .is_selected."""
@@ -47,9 +48,18 @@ class Select(BasePrompt):
     @classmethod
     def _convert_string_to_choice(cls, data: Any) -> Any:
         """Ensure all choice options are PromptOptions."""
-        for idx, choice in enumerate(data["choices"]):
+        choices = data.pop("choices")
+        data["choices"] = []
+
+        if isinstance(choices, list):
+            choices = {f"None_{n}": choice for n, choice in enumerate(choices)}
+
+        for idx, (hotkey, choice) in enumerate(choices.items()):
             if isinstance(choice, str):
-                data["choices"][idx] = choice = PromptOption(text=choice, is_highlighted=not idx)
+                hotkey = None if hotkey.startswith("None") else hotkey
+                data["choices"].insert(idx, PromptOption(text=choice, is_highlighted=not idx, hotkey=hotkey))
+            else:
+                data["choices"].insert(idx, choice)
 
         if not any(choice.is_selected for choice in data["choices"]):
             data["choices"][0].is_selected = True
@@ -97,6 +107,13 @@ class Select(BasePrompt):
             idx, highlighted = self._get_highlighted_info()
             self.select(highlighted.text)
 
+    def _input_hotkey_select(self, *, choice) -> None:
+        """ """
+        self.select(choice.text)
+
+        if self.mode == "SINGLE":
+            self.highlight(choice.text)
+
     def _input_terminate(self, ctx: KeyPressContext) -> None:
         """ """
         self.status = "CANCEL"
@@ -110,7 +127,10 @@ class Select(BasePrompt):
     def select(self, choice: str) -> None:
         """Make a selection."""
         for option in self.choices:
-            if option.text == choice:
+            if option.text == choice and self.mode == "SINGLE" and option.is_selected:
+                pass
+
+            elif option.text == choice:
                 option.toggle()
 
             elif self.mode == "SINGLE":
@@ -133,10 +153,18 @@ class Select(BasePrompt):
         kb.bind(key=Keys.Right, fn=self._input_highlighter)
         kb.bind(key=Keys.Down, fn=self._input_highlighter)
         kb.bind(key=Keys.Left, fn=self._input_highlighter)
-        kb.bind(key=" ", fn=self._input_select)
         kb.bind(key=Keys.Escape, fn=self._input_terminate)
         kb.bind(key=Keys.Enter, fn=self._input_validate)
         kb.bind(key=Keys.Any, fn=live.refresh)
+
+        # Add default choice selector
+        kb.bind(key=" ", fn=self._input_select)
+
+        # Add hotkey choice selectors
+        for choice in self.choices:
+            if choice.hotkey is not None:
+                kb.bind(key=choice.hotkey, fn=self._input_hotkey_select, choice=choice)
+                kb.bind(key=choice.hotkey.lower(), fn=self._input_hotkey_select, choice=choice)
 
         kb.run()
 
@@ -182,8 +210,8 @@ class Confirm(Select):
     def __init__(self, **options):
         default = options.get("default")
         choices = [
-            PromptOption(text="Yes", is_selected="Yes" == default, is_highlighted="Yes" == default),
-            PromptOption(text="No", is_selected="No" == default, is_highlighted="No" == default),
+            PromptOption(text="Yes", is_selected="Yes" == default, is_highlighted="Yes" == default, hotkey="Y"),
+            PromptOption(text="No", is_selected="No" == default, is_highlighted="No" == default, hotkey="N"),
         ]
         super().__init__(choices=choices, mode="SINGLE", selection_validator=Confirm.cancel_if_stop_choice, **options)
 
