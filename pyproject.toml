@@ -33,6 +33,8 @@ dependencies = [
     "prompt_toolkit",
     "pydantic",
     "rich",
+
+    "typing_extensions >= 4.4.0; python_version < '3.11.0'",
 ]
 
 [project.urls]
