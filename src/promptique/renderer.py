@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Optional
 
 from rich._loop import loop_first_last
+from rich.console import Console, ConsoleOptions
 from rich.segment import Segment
 from rich.style import Style
 
@@ -15,7 +16,7 @@ class PromptRenderer:
     """
     Wrap prompt rendering so that they fit into a menu.
 
-    To implement, simply
+    To implement, simply define a __rich_console__ method.
 
     The default PromptRenderer will place a marker in front of the first line
     in a prompt, and a rail on every other line. The first and last lines of
@@ -25,12 +26,6 @@ class PromptRenderer:
     b. The prompt marker will take the theme style.
     e. The last marker will be overriden with a bottom-wrap character.
 
-      a. The first prompt in the menu will have a null-styled opening marker.
-      b. All Prompts will have a .style'd status indicator shown at all times.
-      c. All multi-prompts will have their non-marked lines shown as a .style'd rail.
-      d. The active prompt will have the first line .style'd, with all other lines in
-         the NULL_STYLE.
-      e. The last line in the last prompt will have a closing marker.
 
     A --> ┌ cs_tools config create
           │
@@ -57,6 +52,9 @@ class PromptRenderer:
 
     position: PromptPosition
       ...
+
+    theme: PromptTheme
+      ...
     """
 
     MENU_RAIL_BEG = "┌"
@@ -71,7 +69,7 @@ class PromptRenderer:
     @property
     def max_marker_width(self) -> int:
         """Find the length of the longest marker on a prompt."""
-        return len(self.prompt._marker or self.theme[self.prompt.status].marker)
+        return len(self.prompt.marker or self.theme[self.prompt.status].marker)
 
     def determine_rail_marker(self, is_first_line: bool) -> str:
         """ """
@@ -82,7 +80,7 @@ class PromptRenderer:
             marker = PromptRenderer.MENU_RAIL_END
 
         elif is_first_line:
-            marker = self.prompt._marker or self.theme[self.prompt.status].marker
+            marker = self.prompt.marker or self.theme[self.prompt.status].marker
 
         else:
             marker = PromptRenderer.MENU_RAIL_BAR

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from types import TracebackType
-from typing import Optional
+from typing import Any, Optional
 import logging
 import uuid
 
@@ -22,22 +22,32 @@ log = logging.getLogger(__name__)
 class BasePrompt(pydantic.BaseModel, arbitrary_types_allowed=True):
     """A base class for Prompts."""
 
-    id: str = pydantic.Field(default_factory=lambda: uuid.uuid4().hex)
+    id: str = pydantic.Field(default_factory=lambda: uuid.uuid4().hex)  # noqa: A003
     prompt: str
     detail: Optional[str] = None
     transient: bool = False
 
+    _response: Optional[Any] = None
     _warning: Optional[str] = None
     _exception: Optional[BaseException] = None
     _status: PromptStatus = "HIDDEN"
 
-    _marker: Optional[str] = None
+    _marker_static: Optional[str] = None
     """Allow the prompt marker to be set explicitly."""
 
     @property
     def is_active(self) -> bool:
         """Determine if the Prompt is active."""
         return self._status in ("ACTIVE", "WARNING")
+
+    @property
+    def marker(self) -> Optional[str]:
+        """Retrieve the prompt's marker override."""
+        return self._marker_static
+
+    @marker.setter
+    def marker(self, marker: str) -> None:
+        self._marker_static = marker
 
     @property
     def status(self) -> PromptStatus:
