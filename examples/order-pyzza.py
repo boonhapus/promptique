@@ -2,15 +2,28 @@ from __future__ import annotations
 
 import time
 
+import pydantic
 import rich
 
 from promptique import Menu
-from promptique.prompts import Confirm, Note, Select, Spinner
+from promptique.prompts import Confirm, Note, Select, Spinner, UserInput
+from promptique.validation import ResponseContext
 
 
 def _sim_sync_work() -> None:
     """Simulate doing some work."""
     time.sleep(3)
+
+
+def _is_valid_cc_number(ctx: ResponseContext) -> bool:
+    """Determine if the credit information is valid."""
+    try:
+        pydantic.PaymentCardNumber.validate_digits(ctx.response.replace("-", ""))
+    except Exception as e:
+        ctx.prompt.warning = str(e)
+        return False
+    else:
+        return True
 
 
 def main() -> int:
@@ -31,7 +44,20 @@ def main() -> int:
             choices=["Pepperoni", "Sausage", "Ham", "Chicken", "Bell Peppers", "Onion", "Pineapple"],
             mode="MULTI",
         ),
-        Spinner(prompt="Building your pizza", detail="and sending it to the store!", rate=5, background=_sim_sync_work),
+        UserInput(
+            id="credit_card",
+            prompt="What's your credit card number?",
+            detail="Format: XXXX-XXXX-XXX-XXXX",
+            prefill="3742-4545-540-0126",
+            input_validator=_is_valid_cc_number,
+        ),
+        Spinner(
+            prompt="Building your pizza",
+            detail="and sending it to the store!",
+            rate=5,
+            background=_sim_sync_work,
+            transient=True,
+        ),
     ]
 
     menu = Menu(*prompts, intro=":pizza: Welcome to the Pyzza Shop! :pizza:", outro="Your order will be there soon!")
@@ -39,7 +65,7 @@ def main() -> int:
     menu.run()
 
     # Print out all the answers.
-    rich.print("\n", {prompt.id: getattr(prompt, "answer", None) for prompt in menu.prompts}, "\n")
+    rich.print("\n", {prompt.id: prompt._response for prompt in menu.prompts}, "\n")
 
     return 0
 
