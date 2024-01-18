@@ -65,7 +65,7 @@ class PromptTheme(pydantic.BaseModel, arbitrary_types_allowed=True):
     hidden: ThemeElement = ThemeElement(marker=" ", style=Style.null())
     active: ThemeElement = ThemeElement(marker="◆", style=Style(color="blue", bold=True))
     success: ThemeElement = ThemeElement(marker="◇", style=Style(color="green", bold=True))
-    warning: ThemeElement = ThemeElement(marker="◈", style=Style(color="yellow", bold=True))
+    warning: ThemeElement = ThemeElement(marker="◈", style=Style(color="yellow"))
     error: ThemeElement = ThemeElement(marker="✦", style=Style(color="red", bold=True))
     cancel: ThemeElement = ThemeElement(marker="◈", style=Style(color="white", bold=True, dim=True))
 
