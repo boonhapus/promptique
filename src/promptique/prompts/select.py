@@ -11,6 +11,7 @@ import pydantic
 from promptique._base import BasePrompt
 from promptique._keyboard import KeyboardListener, KeyPressContext
 from promptique.keys import Keys
+from promptique.validation import ResponseContext, noop_always_valid
 
 
 class PromptOption(pydantic.BaseModel):
@@ -27,16 +28,12 @@ class PromptOption(pydantic.BaseModel):
         self.is_selected = False if self.is_selected else True
 
 
-def _noop_always_valid(prompt, answer):
-    return True
-
-
 class Select(BasePrompt):
     """Ask the User to choose from a list of options."""
 
     choices: list[PromptOption]
     mode: Literal["SINGLE", "MULTI"]
-    selection_validator: Callable[[BasePrompt, list[PromptOption]], bool] = pydantic.Field(default=_noop_always_valid)
+    selection_validator: Callable[[ResponseContext], bool] = pydantic.Field(default=noop_always_valid)
     """Validates the answer, sets a warning if the selection is in an invalid state."""
 
     _UI_RADIO_ACTIVE: str = pydantic.PrivateAttr("●")
@@ -66,11 +63,6 @@ class Select(BasePrompt):
 
         return data
 
-    @property
-    def answer(self) -> list[PromptOption]:
-        """Retrieve the valid answers."""
-        return [option for option in self.choices if option.is_selected]
-
     def _get_highlighted_info(self) -> tuple[int, PromptOption]:
         """Implement a naive cursor fetcher. This could be better."""
         for idx, choice in enumerate(self.choices):
@@ -78,7 +70,7 @@ class Select(BasePrompt):
                 return (idx, choice)
         raise ValueError("No option is active.")
 
-    def _input_highlighter(self, ctx: KeyPressContext) -> None:
+    def _interact_highlighter(self, ctx: KeyPressContext) -> None:
         """ """
         idx, highlighted = self._get_highlighted_info()
         more_than_one_option = len(self.choices) > 1
@@ -99,7 +91,7 @@ class Select(BasePrompt):
             if self.mode == "SINGLE" and more_than_one_option:
                 self.select(to_highlight.text)
 
-    def _input_select(self) -> None:
+    def _interact_select(self) -> None:
         """ """
         more_than_one_option = len(self.choices) > 1
 
@@ -107,21 +99,24 @@ class Select(BasePrompt):
             idx, highlighted = self._get_highlighted_info()
             self.select(highlighted.text)
 
-    def _input_hotkey_select(self, *, choice) -> None:
+    def _interact_hotkey_select(self, *, choice) -> None:
         """ """
         self.select(choice.text)
 
         if self.mode == "SINGLE":
             self.highlight(choice.text)
 
-    def _input_terminate(self, ctx: KeyPressContext) -> None:
+    def _interact_terminate(self, ctx: KeyPressContext) -> None:
         """ """
         self.status = "CANCEL"
         ctx.keyboard.simulate(key=Keys.ControlC)
 
-    def _input_validate(self, ctx: KeyPressContext) -> None:
+    def _interact_validate(self, ctx: KeyPressContext) -> None:
         """ """
-        if self.selection_validator(self, self.answer):
+        r_ctx = ResponseContext(prompt=self, response=[option for option in self.choices if option.is_selected])
+
+        if self.selection_validator(r_ctx):
+            self._response = r_ctx.response
             ctx.keyboard.simulate(key=Keys.ControlC)
 
     def select(self, choice: str) -> None:
@@ -149,22 +144,22 @@ class Select(BasePrompt):
         kb = KeyboardListener()
 
         # Add controls to our selection UI.
-        kb.bind(key=Keys.Up, fn=self._input_highlighter)
-        kb.bind(key=Keys.Right, fn=self._input_highlighter)
-        kb.bind(key=Keys.Down, fn=self._input_highlighter)
-        kb.bind(key=Keys.Left, fn=self._input_highlighter)
-        kb.bind(key=Keys.Escape, fn=self._input_terminate)
-        kb.bind(key=Keys.Enter, fn=self._input_validate)
+        kb.bind(key=Keys.Up, fn=self._interact_highlighter)
+        kb.bind(key=Keys.Right, fn=self._interact_highlighter)
+        kb.bind(key=Keys.Down, fn=self._interact_highlighter)
+        kb.bind(key=Keys.Left, fn=self._interact_highlighter)
+        kb.bind(key=Keys.Escape, fn=self._interact_terminate)
+        kb.bind(key=Keys.Enter, fn=self._interact_validate)
         kb.bind(key=Keys.Any, fn=live.refresh)
 
         # Add default choice selector
-        kb.bind(key=" ", fn=self._input_select)
+        kb.bind(key=" ", fn=self._interact_select)
 
         # Add hotkey choice selectors
         for choice in self.choices:
             if choice.hotkey is not None:
-                kb.bind(key=choice.hotkey, fn=self._input_hotkey_select, choice=choice)
-                kb.bind(key=choice.hotkey.lower(), fn=self._input_hotkey_select, choice=choice)
+                kb.bind(key=choice.hotkey, fn=self._interact_hotkey_select, choice=choice)
+                kb.bind(key=choice.hotkey.lower(), fn=self._interact_hotkey_select, choice=choice)
 
         kb.run()
 
@@ -215,13 +210,13 @@ class Confirm(Select):
         ]
         super().__init__(choices=choices, mode="SINGLE", selection_validator=Confirm.cancel_if_stop_choice, **options)
 
-    @classmethod
-    def cancel_if_stop_choice(cls, prompt: BasePrompt, answer: list[PromptOption]) -> bool:
+    @staticmethod
+    def cancel_if_stop_choice(ctx: ResponseContext) -> bool:
         """Set internal state if the answer means cancelled."""
-        assert isinstance(prompt, Confirm)
+        assert isinstance(ctx.prompt, Confirm)
 
         # In single-select mode, there is always only ever 1 answer.
-        if answer[0].text == prompt.choice_means_stop:
-            prompt.status = "CANCEL"
+        if ctx.response[0].text == ctx.prompt.choice_means_stop:
+            ctx.prompt.status = "CANCEL"
 
         return True
