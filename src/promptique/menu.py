@@ -48,6 +48,12 @@ class Menu:
             vertical_overflow="visible",
         )
 
+    def __getitem__(self, prompt_id: str) -> BasePrompt:
+        try:
+            return next(prompt for prompt in self.prompts if prompt.id == prompt_id)
+        except StopIteration:
+            raise KeyError(f"No prompt in this menu with ID '{prompt_id}'") from None
+
     def __rich__(self) -> RenderableType:
         """Makes the Prompt Menu class itself renderable."""
         return self.get_renderable()
