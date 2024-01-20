@@ -8,9 +8,9 @@ from rich.style import Style
 from rich.text import Text
 import pydantic
 
+from promptique import keys
 from promptique._base import BasePrompt
 from promptique._keyboard import KeyboardListener, KeyPressContext
-from promptique.keys import Keys
 from promptique.validation import ResponseContext, noop_always_valid
 
 
@@ -46,8 +46,8 @@ class UserInput(BasePrompt):
 
     def _interact_buffer_append(self, ctx: KeyPressContext) -> None:
         """Add to the buffer if the key is printable."""
-        if ctx.key_press.key == ctx.key_press.data:
-            self._buffer.append(ctx.key_press.key)
+        if ctx.key.is_printable:
+            self._buffer.append(ctx.key.data)
 
     def _interact_validate(self, ctx: KeyPressContext, *, original_prompt: str) -> None:
         """Simulate input()'s validate on enter."""
@@ -56,16 +56,16 @@ class UserInput(BasePrompt):
         if self.input_validator(r_ctx):
             self.prompt = original_prompt
             self._response = r_ctx.response
-            ctx.keyboard.simulate(key=Keys.ControlC)
+            ctx.keyboard.simulate(key=keys.ControlC)
         else:
             self._buffer.clear()
 
     def _interact_terminate(self, ctx: KeyPressContext) -> None:
         """Simulate input()'s SIGINT."""
-        if ctx.key_press.key == Keys.Escape:
+        if ctx.key == keys.Escape:
             self.status = "CANCEL"
 
-        ctx.keyboard.simulate(key=Keys.ControlC)
+        ctx.keyboard.simulate(key=keys.ControlC)
 
     def interactivity(self, live: Live) -> None:
         """Handle taking input from the User."""
@@ -74,12 +74,12 @@ class UserInput(BasePrompt):
         kb = KeyboardListener()
 
         # Simulate being an input() subshell
-        kb.bind(key=Keys.Any, fn=self._interact_buffer_append)
-        kb.bind(key=Keys.Enter, fn=self._interact_validate, original_prompt=original_prompt)
-        kb.bind(key=Keys.Escape, fn=self._interact_terminate)
-        kb.bind(key=Keys.Backspace, fn=lambda: self._buffer.pop() if self._buffer else False)
-        kb.bind(key=Keys.Left, fn=lambda: self._buffer.pop() if self._buffer else False)
-        kb.bind(key=Keys.Any, fn=live.refresh)
+        kb.bind(key=keys.Any, fn=self._interact_buffer_append)
+        kb.bind(key=keys.Enter, fn=self._interact_validate, original_prompt=original_prompt)
+        kb.bind(key=keys.Escape, fn=self._interact_terminate)
+        kb.bind(key=keys.Backspace, fn=lambda: self._buffer.pop() if self._buffer else False)
+        kb.bind(key=keys.Left, fn=lambda: self._buffer.pop() if self._buffer else False)
+        kb.bind(key=keys.Any, fn=live.refresh)
 
         kb.run()
 

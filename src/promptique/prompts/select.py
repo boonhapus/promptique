@@ -8,9 +8,9 @@ from rich.style import Style
 from rich.text import Text
 import pydantic
 
+from promptique import keys
 from promptique._base import BasePrompt
 from promptique._keyboard import KeyboardListener, KeyPressContext
-from promptique.keys import Keys
 from promptique.validation import ResponseContext, noop_always_valid
 
 
@@ -75,7 +75,7 @@ class Select(BasePrompt):
         idx, highlighted = self._get_highlighted_info()
         more_than_one_option = len(self.choices) > 1
 
-        if ctx.key_press.key in (Keys.Right, Keys.Down):
+        if ctx.key in (keys.Right, keys.Down):
             next_idx = (idx + 1) % len(self.choices)
             to_highlight = self.choices[next_idx]
             self.highlight(to_highlight.text)
@@ -83,7 +83,7 @@ class Select(BasePrompt):
             if self.mode == "SINGLE" and more_than_one_option:
                 self.select(to_highlight.text)
 
-        if ctx.key_press.key in (Keys.Left, Keys.Up):
+        if ctx.key in (keys.Left, keys.Up):
             last_idx = (idx - 1) % len(self.choices)
             to_highlight = self.choices[last_idx]
             self.highlight(to_highlight.text)
@@ -109,7 +109,7 @@ class Select(BasePrompt):
     def _interact_terminate(self, ctx: KeyPressContext) -> None:
         """ """
         self.status = "CANCEL"
-        ctx.keyboard.simulate(key=Keys.ControlC)
+        ctx.keyboard.simulate(key=keys.ControlC)
 
     def _interact_validate(self, ctx: KeyPressContext) -> None:
         """ """
@@ -117,7 +117,7 @@ class Select(BasePrompt):
 
         if self.selection_validator(r_ctx):
             self._response = r_ctx.response
-            ctx.keyboard.simulate(key=Keys.ControlC)
+            ctx.keyboard.simulate(key=keys.ControlC)
 
     def select(self, choice: str) -> None:
         """Make a selection."""
@@ -144,22 +144,22 @@ class Select(BasePrompt):
         kb = KeyboardListener()
 
         # Add controls to our selection UI.
-        kb.bind(key=Keys.Up, fn=self._interact_highlighter)
-        kb.bind(key=Keys.Right, fn=self._interact_highlighter)
-        kb.bind(key=Keys.Down, fn=self._interact_highlighter)
-        kb.bind(key=Keys.Left, fn=self._interact_highlighter)
-        kb.bind(key=Keys.Escape, fn=self._interact_terminate)
-        kb.bind(key=Keys.Enter, fn=self._interact_validate)
-        kb.bind(key=Keys.Any, fn=live.refresh)
+        kb.bind(key=keys.Up, fn=self._interact_highlighter)
+        kb.bind(key=keys.Right, fn=self._interact_highlighter)
+        kb.bind(key=keys.Down, fn=self._interact_highlighter)
+        kb.bind(key=keys.Left, fn=self._interact_highlighter)
+        kb.bind(key=keys.Escape, fn=self._interact_terminate)
+        kb.bind(key=keys.Enter, fn=self._interact_validate)
+        kb.bind(key=keys.Any, fn=live.refresh)
 
         # Add default choice selector
-        kb.bind(key=" ", fn=self._interact_select)
+        kb.bind(key=keys.Space, fn=self._interact_select)
 
         # Add hotkey choice selectors
         for choice in self.choices:
             if choice.hotkey is not None:
-                kb.bind(key=choice.hotkey, fn=self._interact_hotkey_select, choice=choice)
-                kb.bind(key=choice.hotkey.lower(), fn=self._interact_hotkey_select, choice=choice)
+                kb.bind(key=keys.Key.letter(choice.hotkey.upper()), fn=self._interact_hotkey_select, choice=choice)
+                kb.bind(key=keys.Key.letter(choice.hotkey.lower()), fn=self._interact_hotkey_select, choice=choice)
 
         kb.run()
 
