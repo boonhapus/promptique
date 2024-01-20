@@ -36,7 +36,7 @@ class Spinner(BasePrompt):
         last_step = time.perf_counter()
 
         if self.location == "MARKER":
-            set_placement = ft.partial(setattr, self, "_marker")
+            set_placement = ft.partial(setattr, self, "marker")
 
         if self.location == "DETAIL":
             set_placement = ft.partial(setattr, self, "detail")

@@ -14,6 +14,6 @@ class ResponseContext(pydantic.BaseModel, arbitrary_types_allowed=True):
     response: Any
 
 
-def noop_always_valid(ctx: ResponseContext) -> bool:
+def noop_always_valid(ctx: ResponseContext) -> bool:  # noqa: ARG001
     """For any given input, always pass validation."""
     return True
