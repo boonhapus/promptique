@@ -10,7 +10,7 @@ import pydantic
 
 from promptique import keys
 from promptique._base import BasePrompt
-from promptique._keyboard import KeyboardListener, KeyPressContext
+from promptique.keyboard import KeyboardListener, KeyPressContext
 from promptique.validation import ResponseContext, noop_always_valid
 
 
@@ -144,22 +144,23 @@ class Select(BasePrompt):
         kb = KeyboardListener()
 
         # Add controls to our selection UI.
-        kb.bind(key=keys.Up, fn=self._interact_highlighter)
-        kb.bind(key=keys.Right, fn=self._interact_highlighter)
-        kb.bind(key=keys.Down, fn=self._interact_highlighter)
-        kb.bind(key=keys.Left, fn=self._interact_highlighter)
-        kb.bind(key=keys.Escape, fn=self._interact_terminate)
-        kb.bind(key=keys.Enter, fn=self._interact_validate)
-        kb.bind(key=keys.Any, fn=live.refresh)
+        kb.bind(keys.Up, keys.Right, keys.Down, keys.Left, fn=self._interact_highlighter)
+        kb.bind(keys.Escape, fn=self._interact_terminate)
+        kb.bind(keys.Enter, fn=self._interact_validate)
+        kb.bind(keys.Any, fn=live.refresh)
 
         # Add default choice selector
-        kb.bind(key=keys.Space, fn=self._interact_select)
+        kb.bind(keys.Space, fn=self._interact_select)
 
         # Add hotkey choice selectors
         for choice in self.choices:
             if choice.hotkey is not None:
-                kb.bind(key=keys.Key.letter(choice.hotkey.upper()), fn=self._interact_hotkey_select, choice=choice)
-                kb.bind(key=keys.Key.letter(choice.hotkey.lower()), fn=self._interact_hotkey_select, choice=choice)
+                kb.bind(
+                    keys.Key.letter(choice.hotkey.lower()),
+                    keys.Key.letter(choice.hotkey.upper()),
+                    fn=self._interact_hotkey_select,
+                    choice=choice,
+                )
 
         kb.run()
 

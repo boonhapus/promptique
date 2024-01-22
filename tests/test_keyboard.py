@@ -4,7 +4,7 @@ import asyncio
 
 import pytest
 
-from promptique._keyboard import KeyboardListener
+from promptique.keyboard import KeyboardListener
 
 
 @pytest.mark.asyncio
