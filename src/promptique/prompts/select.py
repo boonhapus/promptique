@@ -61,6 +61,9 @@ class Select(BasePrompt):
         if not any(choice.is_selected for choice in data["choices"]):
             data["choices"][0].is_selected = True
 
+        if not any(choice.is_highlighted for choice in data["choices"]):
+            data["choices"][0].is_highlighted = True
+
         return data
 
     def _get_highlighted_info(self) -> tuple[int, PromptOption]:
