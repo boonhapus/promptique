@@ -37,36 +37,36 @@ class KeyboardListener:
         self._active_hooks: set[asyncio.Task] = set()
         self._is_accepting_keys: bool = False
 
-    def _trigger_hooks(self, key: keys.Key) -> None:
+    def _trigger_hooks(self, ctx: KeyPressContext) -> None:
         """Trigger hooked callbacks on key press."""
         if not self._is_accepting_keys:
-            log.warning(f"{key} ignored, listener has been shut")
+            log.warning(f"{ctx.key} ignored, listener has been shut")
             return
 
         hooks = [
-            *self._key_hooks.get(key, []),
+            *self._key_hooks.get(ctx.key, []),
             *self._key_hooks.get(keys.Any, []),
         ]
 
         if hooks is None:
             return
 
-        ctx = KeyPressContext(key=key, keyboard=self)
-
         for hook in hooks:
             task = asyncio.create_task(_utils.invoke(hook, ctx))
             task.add_done_callback(lambda t: self._active_hooks.discard(t))
             self._active_hooks.add(task)
 
-    def bind(self, key: keys.Key, fn: Callable, **kw) -> None:
+    def bind(self, *keys: keys.Key, fn: Callable, **kw) -> None:
         """Add a callback to a key press."""
         if kw:
             fn = ft.partial(fn, **kw)
-        self._key_hooks[key].append(fn)
+
+        for key in keys:
+            self._key_hooks[key].append(fn)
 
     def simulate(self, key: keys.Key) -> None:
         """Pretend to press a key."""
-        self._trigger_hooks(key=key)
+        self._trigger_hooks(ctx=KeyPressContext(key=key, keyboard=self))
 
     def run(self) -> None:
         """Synchronous interface to starting a keyboard listener."""
@@ -75,12 +75,11 @@ class KeyboardListener:
     async def start(self, *, ignore_control_c: bool = False) -> None:
         """Start the KeyboardListener."""
         self._is_accepting_keys = True
+        self._input_pipe = create_input()
+        self._background_done = asyncio.Event()
 
         if not ignore_control_c:
             self.bind(keys.ControlC, fn=self.stop)
-
-        self._input_pipe = create_input()
-        self._background_done = asyncio.Event()
 
         def _feed_keys() -> None:
             """Engage prompt_toolkit to listen for keys cross-platform."""
@@ -93,7 +92,7 @@ class KeyboardListener:
                 else:
                     key = keys.Key(name=key_press.key, data=key_press.data, is_printable=True)
 
-                self._trigger_hooks(key)
+                self._trigger_hooks(ctx=KeyPressContext(key=key, keyboard=self))
 
         with self._input_pipe.raw_mode():
             with self._input_pipe.attach(_feed_keys):
@@ -125,6 +124,6 @@ if __name__ == "__main__":
     log = logging.getLogger(__name__)
 
     kb = KeyboardListener()
-    kb.bind(key=keys.Any, fn=lambda ctx: log.info(ctx))
-    kb.bind(key=keys.Paste, fn=lambda ctx: log.info(ctx.key.data))
+    kb.bind(keys.Any, fn=lambda ctx: log.info(ctx))
+    kb.bind(keys.Paste, fn=lambda ctx: log.info(ctx.key.data))
     kb.run()
