@@ -108,17 +108,59 @@ class FileInput(UserInput):
     path_type: Literal["ANY", "FILE", "DIRECTORY"] = "ANY"
     show_hidden_files: bool = False
     page_size: int = 10
+    exists: bool = True
 
     _suggestions: list[pathlib.Path] = pydantic.PrivateAttr(default_factory=list)
-    _root: pathlib.Path = pathlib.Path(".")
+    _root: pathlib.Path = pathlib.Path(".").resolve()
     _debounce_handle: Optional[threading.Timer] = None
     _current_page: int = 1
+    _response: Optional[pathlib.Path] = None  # type: ignore[assignment]
 
-    def update_suggestions(self):
+    def __init__(self, **options):
+        super().__init__(prefill=pathlib.Path().resolve().as_posix(), input_validator=FileInput.is_path_type, **options)
+        self._update_suggestions()
+
+    @staticmethod
+    def is_path_type(ctx: ResponseContext) -> bool:
+        """Determine if the input was a valid Path."""
+        assert isinstance(ctx.prompt, FileInput)
+
+        if not ctx.prompt.exists:
+            return True
+
+        if ctx.prompt.path_type == "FILE" and not ctx.response.is_file():
+            ctx.prompt.warning = "Path must be a valid existing File!"
+            return False
+
+        if ctx.prompt.path_type == "DIRECTORY" and not ctx.response.is_dir():
+            ctx.prompt.warning = "Path must be a valid existing Directory!"
+            return False
+
+        return True
+
+    @property
+    def root(self) -> pathlib.Path:
+        """The rirectory to start our path search in."""
+        return self._root
+
+    @root.setter
+    def root(self, value: pathlib.Path) -> None:
+        assert isinstance(value, pathlib.Path), f"FileInput.root must be a pathlib.Path, got {type(value)}"
+        self._current_page = 1
+        self._root = value
+
+    @property
+    def max_pages(self) -> int:
+        """Calculate the number of pages to draw."""
+        pages, excess = divmod(len(self._suggestions), self.page_size)
+        return pages + (1 if excess else 0)
+
+    def _update_suggestions(self) -> None:
+        """Fetch all relevant path recommendations."""
         prefix = self.buffer_as_string()
         self._suggestions = []
 
-        for suggestion in self._root.iterdir():
+        for suggestion in self.root.iterdir():
             if self.path_type == "FILE" and not suggestion.is_file():
                 continue
 
@@ -135,81 +177,75 @@ class FileInput(UserInput):
         """Add to the buffer if the key is printable."""
         if ctx.key == keys.Key.letter("\\"):
             self._buffer.append("/")
-            self._current_page = 1
-            self._root = pathlib.Path(self.buffer_as_string())
+            self.root = pathlib.Path(self.buffer_as_string())
 
         elif ctx.key == keys.Key.letter('"'):
             pass
 
         elif ctx.key.is_printable:
             self._buffer.append(ctx.key.data)
+            self._current_page = 1
 
-        self.update_suggestions()
+        self._update_suggestions()
 
     def _interact_buffer_remove(self) -> None:
+        """Remove characters from the buffer."""
         if not self._buffer:
             return
 
         if self._buffer.pop() == "/":
-            self._current_page = 1
-            self._root = self._root.parent
+            self.root = self.root.parent
 
-        self.update_suggestions()
+        self._update_suggestions()
 
     def _interact_accept_next_suggestion(self) -> None:
+        """Simulate tab completion."""
         try:
             suggestion = self._suggestions[0]
         except IndexError:
             return
 
         if suggestion.is_dir():
-            self._root = suggestion
+            self.root = suggestion
 
         self._buffer = list(suggestion.as_posix())
-        self._current_page = 1
-        self.update_suggestions()
+        self._update_suggestions()
 
     def _interact_update_root(self, ctx: KeyPressContext) -> None:
+        """When we hit a path delimiter, update the root path."""
         self._buffer.append(ctx.key.data)
-        self._current_page = 1
-        self._root = pathlib.Path(self.buffer_as_string())
+        self.root = pathlib.Path(self.buffer_as_string())
 
     def _interact_validate(self, ctx: KeyPressContext, *, original_prompt: str) -> None:
         """Simulate input()'s validate on enter."""
-        r_ctx = ResponseContext(prompt=self, response=self.buffer_as_string())
+        r_ctx = ResponseContext(prompt=self, response=pathlib.Path(self.buffer_as_string()))
 
         if self.input_validator(r_ctx):
             self.prompt = original_prompt
             self._response = r_ctx.response
             self._suggestions = []
             ctx.keyboard.simulate(key=keys.ControlC)
-        else:
-            self._buffer.clear()
 
-    def _interact_page(self, ctx) -> None:
-        if ctx.key in (keys.PageUp,):
+    def _interact_page(self, ctx: KeyPressContext) -> None:
+        """When we hit a path delimiter, update the root path."""
+        if ctx.key in (keys.PageUp, keys.Up):
             self._current_page = max(self._current_page - 1, 1)
 
-        if ctx.key in (keys.PageDown,):
+        if ctx.key in (keys.PageDown, keys.Down):
             self._current_page = min(self.max_pages, self._current_page + 1)
 
-    @property
-    def max_pages(self) -> int:
-        pages, excess = divmod(len(self._suggestions), self.page_size)
-        return pages + (1 if excess else 0)
-
     def interactivity(self, live: Live) -> None:
-        """ """
+        """Handle taking input from the User."""
         original_prompt = str(self.prompt)
 
         kb = KeyboardListener()
         kb.bind(keys.Any, fn=self._interact_buffer_append)
         kb.bind(keys.Backspace, keys.Left, fn=self._interact_buffer_remove)
-        kb.bind(keys.Key.letter("/"), fn=self._interact_update_root)
         kb.bind(keys.Tab, fn=self._interact_accept_next_suggestion)
+        kb.bind(keys.Key.letter("/"), fn=self._interact_update_root)
+        kb.bind(keys.PageUp, keys.PageDown, keys.Up, keys.Down, fn=self._interact_page)
         kb.bind(keys.Enter, fn=self._interact_validate, original_prompt=original_prompt)
         kb.bind(keys.Escape, fn=self._interact_terminate)
-        kb.bind(keys.PageUp, keys.PageDown, fn=self._interact_page)
         kb.bind(keys.Any, fn=live.refresh)
         kb.run()
 
@@ -225,7 +261,7 @@ class FileInput(UserInput):
                 max_result = self._current_page * self.page_size
 
                 if min_result <= idx < max_result:
-                    emoji = "📝" if suggestion.is_file() else "📁"
+                    emoji = ":page_facing_up:" if suggestion.is_file() else ":file_folder:"
                     yield Text(f"{_emoji_replace(emoji)} {suggestion.as_posix()}", style="bold dim white")
 
                 if max_result < idx:
