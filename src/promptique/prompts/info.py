@@ -29,30 +29,30 @@ class Spinner(BasePrompt):
     icons: Iterable[str] = ("◒", "◐", "◓", "◑")
     rate: float = 3.0
     location: Literal["MARKER", "DETAIL"] = "MARKER"
+    transient: bool = True
 
     def interactivity(self, live: Live) -> None:
         """Optionally give the User some time to read."""
-        stepper = it.cycle(self.icons)
-        last_step = time.perf_counter()
-
         if self.location == "MARKER":
-            set_placement = ft.partial(setattr, self, "marker")
+            update_visible_icon = ft.partial(setattr, self, "marker")
 
         if self.location == "DETAIL":
-            set_placement = ft.partial(setattr, self, "detail")
+            update_visible_icon = ft.partial(setattr, self, "detail")
 
-        set_placement(next(stepper))
+        icons = it.cycle(self.icons)
+        update_visible_icon(next(icons))
 
-        thread = threading.Thread(target=self.background)
-        thread.start()
+        bg_worker = threading.Thread(target=self.background)
+        bg_worker.start()
 
-        while thread.is_alive():
+        last_step = time.perf_counter()
+        max_waits = 1 / self.rate
+
+        while bg_worker.is_alive():
             delta = time.perf_counter() - last_step
-
-            if delta <= (1 / self.rate):
-                time.sleep((1 / self.rate) - delta)
-                set_placement(next(stepper))
-                live.refresh()
-                last_step = time.perf_counter()
+            time.sleep(max_waits - delta)
+            update_visible_icon(next(icons))
+            live.refresh()
+            last_step = time.perf_counter()
 
         self._marker = None
