@@ -20,7 +20,6 @@ class PromptOption(pydantic.BaseModel):
     text: str
     description: Optional[str] = None
     is_selected: bool = False
-    is_highlighted: bool = False
     hotkey: Optional[str] = None
 
     def toggle(self) -> None:
@@ -36,10 +35,14 @@ class Select(BasePrompt):
     selection_validator: Callable[[ResponseContext], bool] = pydantic.Field(default=noop_always_valid)
     """Validates the answer, sets a warning if the selection is in an invalid state."""
 
-    _UI_RADIO_ACTIVE: str = pydantic.PrivateAttr("●")
-    _UI_RADIO_INACTIVE: str = pydantic.PrivateAttr("○")
-    _UI_CHECK_ACTIVE: str = pydantic.PrivateAttr("◼")
-    _UI_CHECK_INACTIVE: str = pydantic.PrivateAttr("◻")
+    _focused: Optional[PromptOption] = None
+    """The first highlighted option. If no choices are highlighted, the first option will be highlited on __init__"""
+
+    # UI ELEMENTS
+    _UI_RADIO_ACTIVE: str = "●"
+    _UI_RADIO_INACTIVE: str = "○"
+    _UI_CHECK_ACTIVE: str = "◼"
+    _UI_CHECK_INACTIVE: str = "◻"
 
     @pydantic.model_validator(mode="before")
     @classmethod
@@ -54,100 +57,86 @@ class Select(BasePrompt):
         for idx, (hotkey, choice) in enumerate(choices.items()):
             if isinstance(choice, str):
                 hotkey = None if hotkey.startswith("None") else hotkey
-                data["choices"].insert(idx, PromptOption(text=choice, is_highlighted=not idx, hotkey=hotkey))
+                data["choices"].insert(idx, PromptOption(text=choice, hotkey=hotkey))
             else:
                 data["choices"].insert(idx, choice)
 
-        if not any(choice.is_selected for choice in data["choices"]):
-            data["choices"][0].is_selected = True
-
-        if not any(choice.is_highlighted for choice in data["choices"]):
-            data["choices"][0].is_highlighted = True
-
         return data
 
-    def _get_highlighted_info(self) -> tuple[int, PromptOption]:
-        """Implement a naive cursor fetcher. This could be better."""
-        for idx, choice in enumerate(self.choices):
-            if choice.is_highlighted:
-                return (idx, choice)
-        raise ValueError("No option is active.")
+    @pydantic.model_validator(mode="after")
+    def _force_at_least_one_selection(self):
+        try:
+            self._focused = next(choice for choice in self.choices if choice.is_selected)
+        except StopIteration:
+            self._focused = self.choices[0]
+            self._focused.is_selected = True
 
-    def _interact_highlighter(self, ctx: KeyPressContext) -> None:
-        """ """
-        idx, highlighted = self._get_highlighted_info()
+    def _interact_focus(self, ctx: KeyPressContext) -> None:
+        """Move to the next/previous option under focus."""
+        assert self._focused is not None
         more_than_one_option = len(self.choices) > 1
+        idx = self.choices.index(self._focused)
 
         if ctx.key in (keys.Right, keys.Down):
             next_idx = (idx + 1) % len(self.choices)
-            to_highlight = self.choices[next_idx]
-            self.highlight(to_highlight.text)
+            self._focused = self.choices[next_idx]
 
             if self.mode == "SINGLE" and more_than_one_option:
-                self.select(to_highlight.text)
+                self.select(self._focused)
 
         if ctx.key in (keys.Left, keys.Up):
             last_idx = (idx - 1) % len(self.choices)
-            to_highlight = self.choices[last_idx]
-            self.highlight(to_highlight.text)
+            self._focused = self.choices[last_idx]
 
             if self.mode == "SINGLE" and more_than_one_option:
-                self.select(to_highlight.text)
+                self.select(self._focused)
 
     def _interact_select(self) -> None:
-        """ """
+        """Select the option under highlight."""
+        assert self._focused is not None
         more_than_one_option = len(self.choices) > 1
 
         if self.mode == "MULTI" and more_than_one_option:
-            idx, highlighted = self._get_highlighted_info()
-            self.select(highlighted.text)
+            self.select(self._focused)
 
-    def _interact_hotkey_select(self, *, choice) -> None:
-        """ """
-        self.select(choice.text)
-
-        if self.mode == "SINGLE":
-            self.highlight(choice.text)
+    def _interact_hotkey_select(self, *, choice: PromptOption) -> None:
+        """Select based on the given hotkey."""
+        self.select(choice)
+        self._focused = choice
 
     def _interact_terminate(self, ctx: KeyPressContext) -> None:
-        """ """
+        """Quit the prompt."""
         self.status = "CANCEL"
         ctx.keyboard.simulate(key=keys.ControlC)
 
     def _interact_validate(self, ctx: KeyPressContext) -> None:
-        """ """
+        """Validate the prompt choice."""
         r_ctx = ResponseContext(prompt=self, response=[option for option in self.choices if option.is_selected])
 
         if self.selection_validator(r_ctx):
             self._response = r_ctx.response
             ctx.keyboard.simulate(key=keys.ControlC)
 
-    def select(self, choice: str) -> None:
+    def select(self, choice: PromptOption) -> None:
         """Make a selection."""
         for option in self.choices:
-            if option.text == choice and self.mode == "SINGLE" and option.is_selected:
+            is_selected_option = option == choice
+
+            if is_selected_option and self.mode == "SINGLE" and option.is_selected:
                 pass
 
-            elif option.text == choice:
+            elif is_selected_option:
                 option.toggle()
 
             elif self.mode == "SINGLE":
                 option.is_selected = False
-
-    def highlight(self, choice: str) -> None:
-        """Highlight an option."""
-        for option in self.choices:
-            if option.text == choice:
-                option.is_highlighted = True
-            else:
-                option.is_highlighted = False
 
     def interactivity(self, live: Live) -> None:
         """Handle selecting one of the choices from the User."""
         kb = KeyboardListener()
 
         # Add controls to our selection UI.
-        kb.bind(keys.Up, keys.Right, keys.Down, keys.Left, fn=self._interact_highlighter)
+        kb.bind(keys.Up, keys.Right, keys.Down, keys.Left, fn=self._interact_focus)
         kb.bind(keys.Escape, fn=self._interact_terminate)
         kb.bind(keys.Enter, fn=self._interact_validate)
         kb.bind(keys.Any, fn=live.refresh)
@@ -170,34 +159,32 @@ class Select(BasePrompt):
     def draw_selector(self) -> Text:
         """Render the choices to select from."""
         # fmt: off
-        active = self._UI_RADIO_ACTIVE   if self.mode == "SINGLE" else self._UI_CHECK_ACTIVE
-        hidden = self._UI_RADIO_INACTIVE if self.mode == "SINGLE" else self._UI_CHECK_INACTIVE
+        active   = self._UI_RADIO_ACTIVE   if self.mode == "SINGLE" else self._UI_CHECK_ACTIVE
+        inactive = self._UI_RADIO_INACTIVE if self.mode == "SINGLE" else self._UI_CHECK_INACTIVE
         choices  = []
         # fmt: on
 
         for option in self.choices:
             # fmt: off
-            marker = active if option.is_selected else hidden
-            focus  = option.is_highlighted and self.is_active
-            color  = "green" if (focus or option.is_selected and not self.is_active) else "white"
+            marker = active if option.is_selected else inactive
+            focus  = self._focused == option
+            color  = "green" if (focus or option.is_selected) else "white"
             choice = Text(text=f"{marker} {option.text}", style=Style(color=color, bold=True, dim=not focus))
-
-            if self.is_active or (not self.is_active and option.is_selected):
-                choices.append(choice)
             # fmt: on
+
+            if self.is_active or option.is_selected:
+                choices.append(choice)
 
         return Text(text=" / ").join(choices)
 
     def __rich_console__(self, console: Console, options: ConsoleOptions) -> RenderResult:
         """How Rich should display the Prompt."""
+        assert self._focused is not None
         yield from super().__rich_console__(console=console, options=options)
         yield self.draw_selector()
 
-        if self.is_active:
-            highlighted = next(option for option in self.choices if option.is_highlighted)
-
-            if highlighted.description is not None:
-                yield Text(text=highlighted.description, style=Style(color="green", bold=True, italic=True, dim=True))
+        if self.is_active and self._focused.description is not None:
+            yield Text(text=self._focused.description, style=Style(color="green", bold=True, italic=True, dim=True))
 
 
 class Confirm(Select):
@@ -207,10 +194,9 @@ class Confirm(Select):
     choice_means_stop: Optional[Literal["Yes", "No"]] = None
 
     def __init__(self, **options):
-        default = options.get("default")
         choices = [
-            PromptOption(text="Yes", is_selected="Yes" == default, is_highlighted="Yes" == default, hotkey="Y"),
-            PromptOption(text="No", is_selected="No" == default, is_highlighted="No" == default, hotkey="N"),
+            PromptOption(text="Yes", is_selected="Yes" == options["default"], hotkey="Y"),
+            PromptOption(text="No", is_selected="No" == options["default"], hotkey="N"),
         ]
         super().__init__(choices=choices, mode="SINGLE", selection_validator=Confirm.cancel_if_stop_choice, **options)
 
