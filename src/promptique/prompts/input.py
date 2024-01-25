@@ -66,9 +66,7 @@ class UserInput(BasePrompt):
 
     def _interact_terminate(self, ctx: KeyPressContext) -> None:
         """Simulate input()'s SIGINT."""
-        if ctx.key == keys.Escape:
-            self.status = "CANCEL"
-
+        self.status = "CANCEL"
         ctx.keyboard.simulate(key=keys.ControlC)
 
     def interactivity(self, live: Live) -> None:
