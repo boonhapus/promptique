@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Callable, Literal, Optional
 import pathlib
 import stat
-import threading
 
 from rich._emoji_replace import _emoji_replace
 from rich.console import Console, ConsoleOptions, RenderResult
@@ -52,6 +51,9 @@ class UserInput(BasePrompt):
         """Add to the buffer if the key is printable."""
         if ctx.key.is_printable:
             self._buffer.append(ctx.key.data)
+
+            if self.prefill is not None:
+                self.prefill = None
 
     def _interact_validate(self, ctx: KeyPressContext, *, original_prompt: str) -> None:
         """Simulate input()'s validate on enter."""
@@ -110,7 +112,6 @@ class FileInput(UserInput):
 
     _suggestions: list[pathlib.Path] = pydantic.PrivateAttr(default_factory=list)
     _root: pathlib.Path = pathlib.Path(".").resolve()
-    _debounce_handle: Optional[threading.Timer] = None
     _current_page: int = 1
     _response: Optional[pathlib.Path] = None  # type: ignore[assignment]
 
@@ -254,6 +255,7 @@ class FileInput(UserInput):
         if self.is_active and self._suggestions:
             yield Text("\n>>> Suggestions ") + Text(f"{self._current_page}/{self.max_pages}", style="dim white")
 
+            # PAGINATION .. how to add keybinds ?
             for idx, suggestion in enumerate(self._suggestions):
                 min_result = (self._current_page * self.page_size) - self.page_size
                 max_result = self._current_page * self.page_size
