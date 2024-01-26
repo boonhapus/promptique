@@ -5,7 +5,7 @@ import time
 import rich
 
 from promptique import Menu
-from promptique.prompts import FileInput, Select, Spinner, UserInput
+from promptique.prompts import FileInput, Note, Select, Spinner, UserInput
 from promptique.prompts.select import PromptOption
 
 
@@ -42,6 +42,9 @@ def main() -> int:
     ]
 
     menu = Menu(*prompts, intro="New Repository", outro="Repository setup is complete!")
+    menu["extras"].link(Note(prompt="IGNORE"), validator=lambda ctx: any(o.text == ".gitignore" for o in ctx.response))
+    menu["extras"].link(Note(prompt="README"), validator=lambda ctx: any(o.text == "README.md" for o in ctx.response))
+    menu["extras"].link(Note(prompt="LICENSE"), validator=lambda ctx: any(o.text == "LICENSE" for o in ctx.response))
     menu.run()
 
     # Print out all the answers.
