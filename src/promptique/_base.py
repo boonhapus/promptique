@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from types import TracebackType
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Callable, Optional
 import logging
 import uuid
 
@@ -15,6 +15,10 @@ import pydantic
 
 from promptique._compat import Self
 from promptique.types import PromptStatus
+from promptique.validation import ResponseContext
+
+if TYPE_CHECKING:
+    from promptique.menu import Menu
 
 log = logging.getLogger(__name__)
 
@@ -34,6 +38,12 @@ class BasePrompt(pydantic.BaseModel, arbitrary_types_allowed=True):
 
     _marker_static: Optional[str] = None
     """Allow the prompt marker to be set explicitly."""
+
+    _menu: Menu = pydantic.PrivateAttr()
+    """Place this prompt inside a Menu."""
+
+    _linked_prompts: list[Callable[[ResponseContext], None]] = pydantic.PrivateAttr(default_factory=list)
+    """Prompts to attempt running after this prompt."""
 
     @property
     def is_active(self) -> bool:
@@ -108,6 +118,26 @@ class BasePrompt(pydantic.BaseModel, arbitrary_types_allowed=True):
         # Override in a subclass to implement functionality.
         pass
 
+    def bind(self, menu: Menu) -> BasePrompt:
+        """Allow a Prompt to get feedback from the User."""
+        self._menu = menu
+        return self
+
+    def link(self, next_prompt: BasePrompt, validator: Callable[[ResponseContext], None]) -> BasePrompt:
+        """Chain a prompt to this one, based on the User's response."""
+
+        def decorator(ctx: ResponseContext) -> None:
+            if not validator(ctx):
+                return
+
+            ctx.prompt._menu.add(next_prompt, after=ctx.prompt)
+
+        # .insert(0, ...) instead of .append because if the check passes we'll insert next_prompt after this one
+        #  which would appear backwards to the user
+        self._linked_prompts.insert(0, decorator)
+
+        return self
+
     def __exit__(self, class_: type[BaseException], exception: BaseException, traceback: TracebackType) -> bool:
         if isinstance(exception, KeyboardInterrupt):
             self._status = "CANCEL"
@@ -123,6 +153,10 @@ class BasePrompt(pydantic.BaseModel, arbitrary_types_allowed=True):
 
         elif self.is_active:
             self._status = "SUCCESS" if not self.transient else "HIDDEN"
+
+            # Process the linked Prompts to this one.
+            ctx = ResponseContext(prompt=self, response=self._response)
+            [link(ctx) for link in self._linked_prompts]
 
         # If we're exiting but we're not active or in an error state, then the status was set intentionally.
         else:

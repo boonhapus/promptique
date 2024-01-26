@@ -117,7 +117,7 @@ class Menu:
 
         You should prefer to use .begin().
         """
-        with prompt:
+        with prompt.bind(self):
             self.live.refresh()
 
             prompt.interactivity(live=self.live)

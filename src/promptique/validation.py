@@ -1,17 +1,17 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-import pydantic
+if TYPE_CHECKING:
+    from promptique._base import BasePrompt
 
-from promptique._base import BasePrompt
 
-
-class ResponseContext(pydantic.BaseModel, arbitrary_types_allowed=True):
+class ResponseContext:
     """Represent the result of User interaction with a prompt."""
 
-    prompt: BasePrompt
-    response: Any
+    def __init__(self, prompt: BasePrompt, response: Any):
+        self.prompt = prompt
+        self.response = response
 
 
 def noop_always_valid(ctx: ResponseContext) -> bool:  # noqa: ARG001
