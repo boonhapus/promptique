@@ -105,7 +105,7 @@ exclude = [
 ignore-init-module-imports = true
 
 [tool.ruff.lint.flake8-type-checking]
-runtime-evaluated-base-classes = ["pydantic.BaseModel"]
+runtime-evaluated-base-classes = ["pydantic.BaseModel", "promptique._base.BasePrompt"]
 strict = true
 
 [tool.ruff.lint.isort]
