@@ -1,0 +1,328 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: powershell.exe
+
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: C:\projects\promptique\examples
+
+  # Export additional ENV variables
+  env:
+    recording: true
+
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 120
+
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 47
+
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+
+  # Quality
+  # 1 - 100
+  quality: 100
+
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 2000
+
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: floating
+    title: Terminalizer
+    style:
+      border: 0px black solid
+      # boxShadow: none
+      # margin: 0px
+
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: null
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.9
+
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
+
+  # The size of the font
+  fontSize: 12
+
+  # The height of lines
+  lineHeight: 1
+
+  # The spacing between letters
+  letterSpacing: 0
+
+  # Theme
+  theme:
+    background: "#0C0C0C"
+    foreground: "#CCCCCC"
+    cursor: "#FFFFFF"
+    black: "#0C0C0C"
+    blue: "#0037DA"
+    cyan: "#3A96DD"
+    green: "#13A10E"
+    magenta: "#881798"
+    red: "#C50F1F"
+    white: "#CCCCCC"
+    yellow: "#C19C00"
+    brightBlack: "#767676"
+    brightBlue: "#3B78FF"
+    brightCyan: "#61D6D6"
+    brightGreen: "#16C60C"
+    brightPurple: "#B4009E"
+    brightRed: "#E74856"
+    brightWhite: "#F2F2F2"
+    brightYellow: "#F9F1A5"
+
+# Records, feel free to edit them
+records:
+  - delay: 794
+    content: "\e[?25l\e[2J\e[m\e[HWindows PowerShell\r\nCopyright (C) Microsoft Corporation. All rights reserved.\e[4;1HInstall the latest PowerShell for new features and improvements! https://aka.ms/PSWindows\e[6;1H\e]0;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\a\e[?25h"
+  - delay: 265
+    content: 'PS C:\projects\promptique\examples> '
+  - delay: 1419
+    content: "\e[93mp"
+  - delay: 15
+    content: "\e[m"
+  - delay: 64
+    content: "\e[93m\bpy"
+  - delay: 15
+    content: "\e[m"
+  - delay: 172
+    content: "\e[?25l\e[93m\e[6;37Hpyt\e[?25h"
+  - delay: 15
+    content: "\e[m"
+  - delay: 15
+    content: "\e[?25l\e[93m\e[6;37Hpyth\e[?25h"
+  - delay: 16
+    content: "\e[m"
+  - delay: 93
+    content: "\e[?25l\e[93m\e[6;37Hpytho\e[?25h"
+  - delay: 15
+    content: "\e[?25l\e[m\e[93m\e[6;37Hpython\e[?25h"
+  - delay: 16
+    content: "\e[m"
+  - delay: 125
+    content: "\e[?25l\e[93m\e[6;37Hpython \e[?25h"
+  - delay: 16
+    content: "\e[m"
+  - delay: 187
+    content: "\e[?25l\e[93m\e[6;37Hpython \e[ms\e[?25h"
+  - delay: 47
+    content: "\e[?25l\e[93m\e[6;37Hpython \e[mse\e[?25h"
+  - delay: 281
+    content: "\e[?25l\e[93m\e[6;37Hpython \e[mset\e[?25h"
+  - delay: 451
+    content: "\e[?25l\e[93m\e[6;37Hpython \e[m.\\setup-config.py\e[?25h"
+  - delay: 748
+    content: "\r\n"
+  - delay: 438
+    content: "\e[?25l\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[34m\e[22m\e[1m\r\n│ \r\n└"
+  - delay: 15
+    content: "\e[m"
+  - delay: 1632
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mp\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 142
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mpr\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 638
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mpro\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 174
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mprom\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 171
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mpromp\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 418
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mprompt\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 94
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mprompti\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 154
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mpromptie\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 93
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mpromptieu\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 716
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mpromptie\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 172
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mprompti\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 157
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mpromptiq\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 141
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mpromptiqu\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 126
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Repository name\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[22m\e[2mGreat repository names are short and memorable.\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mpromptique\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 904
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44m\e[2mC:/projects/promptique/examples\e[34m\e[49m\e[22m\e[1m\r\n└"
+  - delay: 16
+    content: "\e[m"
+  - delay: 1242
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/example\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 125
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/exampl\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 157
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/examp\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 110
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/exam\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 123
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/exa\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 125
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/ex\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 79
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/e\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 108
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 408
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique\e[m\e[K\e[34m\e[1m\r\n│ \e[m\e[K\e[34m\e[1m\r\n│ \e[m>>> Suggestions \e[37m\e[2m1/1\e[34m\e[22m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.pytest_cache\e[34m\e[22m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.ruff_cache\e[34m\e[22m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv\e[34m\e[22m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/docs\e[34m\e[22m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/examples\e[34m\e[22m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/src\e[34m\e[22m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/tests\e[34m\e[22m\e[1m\r\n└"
+  - delay: 15
+    content: "\e[m"
+  - delay: 1492
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/\e[m\e[K\e[34m\e[1m\r\n│ \e[m\e[K\e[34m\e[1m\r\n│ \e[m>>> Suggestions \e[37m\e[2m1/1\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.pytest_cache\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.ruff_cache\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/docs\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/examples\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/src\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/tests\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 644
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/.\e[m\e[K\e[34m\e[1m\r\n│ \e[m\e[K\e[34m\e[1m\r\n│ \e[m>>> Suggestions \e[37m\e[2m1/1\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.pytest_cache\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.ruff_cache\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\r\n\e[K\r\n\e[K\r\n\e[K\r\n\e[K\e[120C"
+  - delay: 1421
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/.v\e[m\e[K\e[34m\e[1m\r\n│ \e[m\e[K\e[34m\e[1m\r\n│ \e[m>>> Suggestions \e[37m\e[2m1/1\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\r\n\e[K\r\n\e[K\e[120C"
+  - delay: 92
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/.ve\e[m\e[K\e[34m\e[1m\r\n│ \e[m\e[K\e[34m\e[1m\r\n│ \e[m>>> Suggestions \e[37m\e[2m1/1\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 671
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/.venv\e[m\e[K\e[34m\e[1m\r\n│ \e[m\e[K\e[34m\e[1m\r\n│ \e[m>>> Suggestions \e[37m\e[2m1/1\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Include\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Lib\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Scripts\e[34m\e[22m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/share\e[34m\e[22m\e[1m\r\n└"
+  - delay: 16
+    content: "\e[m"
+  - delay: 1517
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/.ven\e[m\e[K\e[34m\e[1m\r\n│ \e[m\e[K\e[34m\e[1m\r\n│ \e[m>>> Suggestions \e[37m\e[2m1/1\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Include\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Lib\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Scripts\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/share\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 187
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/.ve\e[m\e[K\e[34m\e[1m\r\n│ \e[m\e[K\e[34m\e[1m\r\n│ \e[m>>> Suggestions \e[37m\e[2m1/1\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Include\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Lib\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Scripts\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/share\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 139
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/.v\e[m\e[K\e[34m\e[1m\r\n│ \e[m\e[K\e[34m\e[1m\r\n│ \e[m>>> Suggestions \e[37m\e[2m1/1\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Include\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Lib\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Scripts\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/share\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 188
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/.\e[m\e[K\e[34m\e[1m\r\n│ \e[m\e[K\e[34m\e[1m\r\n│ \e[m>>> Suggestions \e[37m\e[2m1/1\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Include\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Lib\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Scripts\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/share\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 140
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique/\e[m\e[K\e[34m\e[1m\r\n│ \e[m\e[K\e[34m\e[1m\r\n│ \e[m>>> Suggestions \e[37m\e[2m1/1\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Include\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Lib\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/Scripts\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv/share\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 449
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Where should we create your new project?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[44mC:/projects/promptique\e[m\e[K\e[34m\e[1m\r\n│ \e[m\e[K\e[34m\e[1m\r\n│ \e[m>>> Suggestions \e[37m\e[2m1/1\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.pytest_cache\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.ruff_cache\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/.venv\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/docs\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/examples\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/src\e[34m\e[22m\e[1m\r\n│ \e[37m\e[2m\U0001F4C1 C:/projects/promptique/tests\e[34m\e[22m\e[1m\r\n└"
+  - delay: 16
+    content: "\e[m"
+  - delay: 2739
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Which type of Privacy?\e[m\e[K\e[34m\e[1m\r\n│ \e[32m● Public\e[m / \e[37m\e[1m\e[2m○ Private\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\r\n\e[K\r\n\e[K\r\n\e[K\r\n\e[K\r\n\e[K\r\n\e[K\e[120C"
+  - delay: 1292
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Which type of Privacy?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m○ Public\e[m / \e[32m\e[1m● Private\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 593
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Which type of Privacy?\e[m\e[K\e[34m\e[1m\r\n│ \e[32m● Public\e[m / \e[37m\e[1m\e[2m○ Private\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 686
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Which type of Privacy?\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m○ Public\e[m / \e[32m\e[1m● Private\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 498
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Which type of Privacy?\e[m\e[K\e[34m\e[1m\r\n│ \e[32m● Public\e[m / \e[37m\e[1m\e[2m○ Private\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 484
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Initialize this repository with..\r\n│ \e[37m\e[2m◻ README.md\e[m / \e[37m\e[1m\e[2m◻ .gitignore\e[m / \e[32m\e[1m◼ LICENSE\e[34m\r\n│ \e[32m\e[2m\e[3mA license tells others what they can and can't do with your code\e[34m\e[22m\e[1m\e[23m\r\n└"
+  - delay: 16
+    content: "\e[m"
+  - delay: 904
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Initialize this repository with..\e[m\e[K\e[34m\e[1m\r\n│ \e[37m\e[2m◻ README.md\e[m / \e[32m\e[1m◻ .gitignore\e[m / \e[32m\e[1m\e[2m◼ LICENSE\e[m\e[K\e[34m\e[1m\r\n│ \e[32m\e[2m\e[3mChoose which files not to track from a list of templates\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 575
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Initialize this repository with..\e[m\e[K\e[34m\e[1m\r\n│ \e[32m◻ README.md\e[m / \e[37m\e[1m\e[2m◻ .gitignore\e[m / \e[32m\e[1m\e[2m◼ LICENSE\e[m\e[K\e[34m\e[1m\r\n│ \e[32m\e[2m\e[3mThis is where you can write a long description for your project\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 874
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Initialize this repository with..\e[m\e[K\e[34m\e[1m\r\n│ \e[32m◼ README.md\e[m / \e[37m\e[1m\e[2m◻ .gitignore\e[m / \e[32m\e[1m\e[2m◼ LICENSE\e[m\e[K\e[34m\e[1m\r\n│ \e[32m\e[2m\e[3mThis is where you can write a long description for your project\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 1479
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Initialize this repository with..\e[m\e[K\e[34m\e[1m\r\n│ \e[32m◻ README.md\e[m / \e[37m\e[1m\e[2m◻ .gitignore\e[m / \e[32m\e[1m\e[2m◼ LICENSE\e[m\e[K\e[34m\e[1m\r\n│ \e[32m\e[2m\e[3mThis is where you can write a long description for your project\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 390
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Initialize this repository with..\e[m\e[K\e[34m\e[1m\r\n│ \e[32m◼ README.md\e[m / \e[37m\e[1m\e[2m◻ .gitignore\e[m / \e[32m\e[1m\e[2m◼ LICENSE\e[m\e[K\e[34m\e[1m\r\n│ \e[32m\e[2m\e[3mThis is where you can write a long description for your project\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 1311
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Initialize this repository with..\e[m\e[K\e[34m\e[1m\r\n│ \e[32m\e[2m◼ README.md\e[m / \e[32m\e[1m◻ .gitignore\e[m / \e[32m\e[1m\e[2m◼ LICENSE\e[m\e[K\e[34m\e[1m\r\n│ \e[32m\e[2m\e[3mChoose which files not to track from a list of templates\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 1930
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Initialize this repository with..\e[m\e[K\e[34m\e[1m\r\n│ \e[32m\e[2m◼ README.md\e[m / \e[37m\e[1m\e[2m◻ .gitignore\e[m / \e[32m\e[1m◼ LICENSE\e[m\e[K\e[34m\e[1m\r\n│ \e[32m\e[2m\e[3mA license tells others what they can and can't do with your code\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 1276
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Creating README.md..\e[m\e[K\e[34m\e[1m\r\n└"
+  - delay: 15
+    content: "\e[m"
+  - delay: 341
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◐ Creating README.md..\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 327
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◓ Creating README.md..\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 343
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Creating LICENSE..\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 341
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◐ Creating LICENSE..\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 341
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◓ Creating LICENSE..\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 330
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◆ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 215
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◐ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 203
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◓ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 202
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◑ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 204
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◒ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 202
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◐ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 201
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◓ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 203
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◑ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 203
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◒ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 201
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◐ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 218
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◓ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 202
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◑ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 203
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◒ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 203
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◐ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 205
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\e[34m\e[1m\r\n◓ Creating your repository.\e[m\e[K\e[34m\e[1m\r\n└\e[m\e[K\e[119C"
+  - delay: 199
+    content: "\e[9;1H┌ New Repository\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mRepository name\e[K\r\n│ \e[37m\e[2mpromptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhere should we create your new project?\e[K\r\n│ \e[37m\e[2mC:/projects/promptique\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mWhich type of Privacy?\e[K\r\n│ \e[37m\e[1m\e[2m● Public\e[m\e[K\r\n│\e[K\e[32m\e[1m\r\n◇ \e[mInitialize this repository with..\e[K\r\n│ \e[37m\e[1m\e[2m◼ README.md\e[22m\e[2m / \e[1m◼ LICENSE\e[m\e[K\r\n│\e[K\r\n└ Repository setup is complete!\e[K\r\n\e[K\e[1m\e[26;1H{\e[22m\r\n    \e[32m'intro'\e[m: \e[35m\e[3mNone\e[m,\r\n    \e[32m'name'\e[m: \e[32m'promptique'\e[m,\r\n    \e[32m'root'\e[m: \e[35m\e[1mWindowsPath\e[m\e[1m(\e[32m\e[22m'C:/projects/promptique'\e[m\e[1m)\e[22m,\r\n    \e[32m'privacy'\e[m: \e[1m[\e[35mPromptOption\e[m\e[1m(\e[33m\e[22mtext\e[m=\e[32m'Public'\e[m, \e[33mdescription\e[m=\e[35m\e[3mNone\e[m, \e[33mis_selected\e[m=\e[92m\e[3mTrue\e[m, \e[33mhotkey\e[m=\e[35m\e[3mNone\e[m\e[1m)]\e[22m,\r\n    \e[32m'extras'\e[m: \e[1m[\e[22m\r\n        \e[35m\e[1mPromptOption\e[m\e[1m(\e[22m\r\n\e[12X\e[33m\e[12Ctext\e[m=\e[32m'README.md'\e[m,\r\n\e[12X\e[33m\e[12Cdescription\e[m=\e[32m'This is where you can write a long description for your project'\e[m,\r\n\e[12X\e[33m\e[12Cis_selected\e[m=\e[92m\e[3mTrue\e[m,\r\n\e[12X\e[33m\e[12Chotkey\e[m=\e[35m\e[3mNone\e[m\r\n        \e[1m)\e[22m,\r\n        \e[35m\e[1mPromptOption\e[m\e[1m(\e[22m\r\n\e[12X\e[33m\e[12Ctext\e[m=\e[32m'LICENSE'\e[m,\r\n\e[12X\e[33m\e[12Cdescription\e[m=\e[32m\"A license tells others what they can and can't do with your code\"\e[m,\r\n\e[12X\e[33m\e[12Cis_selected\e[m=\e[92m\e[3mTrue\e[m,\r\n\e[12X\e[33m\e[12Chotkey\e[m=\e[35m\e[3mNone\e[m\r\n        \e[1m)\e[22m\r\n    \e[1m]\e[22m,\r\n    \e[32m'efddc1193fbb4c54880da118363818f6'\e[m: \e[35m\e[3mNone\e[m,\r\n    \e[32m'a71f5312feb54afc8bd0ee52ef9d1e08'\e[m: \e[35m\e[3mNone\e[m,\r\n    \e[32m'26ec18973ed5479dbe32b95e00a0e5bd'\e[m: \e[35m\e[3mNone\e[m,\r\e[?25h\n    \e[32m'outro'\e[m: \e[35m\e[3mNone\e[m\e[K\r\n\e[1m}\e[22m\e[K\r\n\n\n"
+  - delay: 47
+    content: 'PS C:\projects\promptique\examples> '
+  - delay: 3403
+    content: "\e[93me"
+  - delay: 15
+    content: "\e[m"
+  - delay: 236
+    content: "\e[93m\bex"
+  - delay: 16
+    content: "\e[m"
+  - delay: 109
+    content: "\e[?25l\e[93m\e[47;37Hexi\e[?25h"
+  - delay: 15
+    content: "\e[m"
+  - delay: 140
+    content: "\e[?25l\e[92m\e[47;37Hexit\e[?25h"
+  - delay: 15
+    content: "\e[m"
+  - delay: 671
+    content: "\r\n"

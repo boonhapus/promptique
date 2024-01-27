@@ -1,0 +1,72 @@
+Output ../docs/static/example-repository-setup.gif
+
+# Activate the Virtual Environment
+Hide
+Set MarginFill "#0000ff"
+Set Margin 40
+Set BorderRadius 10
+Set Framerate 60
+
+Type "cd .. && .venv/Scripts/active"
+Enter
+Type "cd examples"
+Show
+
+# Start the Prompt
+Type "python setup-config.py"
+Enter
+
+# Give the Reader some time to read
+Sleep 1s
+
+#
+# ◇ Repository name
+#
+
+# Interact with the Repo name
+Type@500ms "promptique"
+Enter
+
+#
+# ◇ Where should we create your new project?
+#
+
+# Remove the current directory to show filtering effect
+Backspace 9
+Sleep 300ms
+Backspace 10
+Sleep 300ms
+Backspace 1
+Sleep 500ms
+
+# Show pagination
+Down
+Sleep 300ms
+Up
+
+# Show filtering effect and tab completion
+Type@500ms "/p"
+Tab
+Sleep 500ms
+Enter
+
+#
+# ◇ Which type of Privacy?
+#
+
+Right
+Sleep 500ms
+Left
+Sleep 700ms
+Right
+Enter
+
+#
+# ◇ Initialize this repository with..
+#
+
+Left 2
+Space
+Right@300ms 2
+Enter
+
