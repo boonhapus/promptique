@@ -1,23 +1,25 @@
 from __future__ import annotations
 
-from types import TracebackType
 from typing import TYPE_CHECKING, Any, Callable, Optional
 import logging
 import uuid
 
-from rich.console import Console, ConsoleOptions, RenderResult
-from rich.live import Live
 from rich.measure import Measurement
 from rich.style import Style
 from rich.styled import Styled
 from rich.text import Text
 import pydantic
 
-from promptique._compat import Self
 from promptique.types import PromptStatus
 from promptique.validation import ResponseContext
 
 if TYPE_CHECKING:
+    from types import TracebackType
+
+    from rich.console import Console, ConsoleOptions, RenderResult
+    from rich.live import Live
+
+    from promptique._compat import Self
     from promptique.menu import Menu
 
 log = logging.getLogger(__name__)
@@ -26,7 +28,7 @@ log = logging.getLogger(__name__)
 class BasePrompt(pydantic.BaseModel, arbitrary_types_allowed=True):
     """A base class for Prompts."""
 
-    id: str = pydantic.Field(default_factory=lambda: uuid.uuid4().hex)  # noqa: A003
+    id: str = pydantic.Field(default_factory=lambda: uuid.uuid4().hex)
     prompt: str
     detail: Optional[str] = None
     transient: bool = False
@@ -39,7 +41,7 @@ class BasePrompt(pydantic.BaseModel, arbitrary_types_allowed=True):
     _marker_static: Optional[str] = None
     """Allow the prompt marker to be set explicitly."""
 
-    _menu: Menu = pydantic.PrivateAttr()
+    _menu: "Menu" = pydantic.PrivateAttr()
     """Place this prompt inside a Menu."""
 
     _linked_prompts: list[Callable[[ResponseContext], None]] = pydantic.PrivateAttr(default_factory=list)

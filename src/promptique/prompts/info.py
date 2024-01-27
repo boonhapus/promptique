@@ -1,15 +1,16 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from typing import Callable, Literal
+from typing import TYPE_CHECKING, Callable, Literal
 import functools as ft
 import itertools as it
 import threading
 import time
 
-from rich.live import Live
-
 from promptique._base import BasePrompt
+
+if TYPE_CHECKING:
+    from rich.live import Live
 
 
 class Note(BasePrompt):
@@ -23,7 +24,7 @@ class Note(BasePrompt):
 
 
 class Spinner(BasePrompt):
-    """ """
+    """Display a rotating icon."""
 
     background: Callable
     icons: Iterable[str] = ("◒", "◐", "◓", "◑")
@@ -32,7 +33,7 @@ class Spinner(BasePrompt):
     transient: bool = True
 
     def interactivity(self, live: Live) -> None:
-        """Optionally give the User some time to read."""
+        """Run the background task and rotate the icons."""
         if self.location == "MARKER":
             update_visible_icon = ft.partial(setattr, self, "marker")
 

@@ -1,20 +1,24 @@
 from __future__ import annotations
 
-from typing import Callable, Literal, Optional
+from typing import TYPE_CHECKING, Callable, Literal, Optional
 import pathlib
 import stat
 
 from rich._emoji_replace import _emoji_replace
-from rich.console import Console, ConsoleOptions, RenderResult
-from rich.live import Live
 from rich.style import Style
 from rich.text import Text
 import pydantic
 
 from promptique import keys
 from promptique._base import BasePrompt
-from promptique.keyboard import KeyboardListener, KeyPressContext
+from promptique.keyboard import KeyboardListener
 from promptique.validation import ResponseContext, noop_always_valid
+
+if TYPE_CHECKING:
+    from rich.console import Console, ConsoleOptions, RenderResult
+    from rich.live import Live
+
+    from promptique.keyboard import KeyPressContext
 
 
 class UserInput(BasePrompt):

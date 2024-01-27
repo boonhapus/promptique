@@ -1,12 +1,16 @@
 from __future__ import annotations
 
-from collections.abc import Iterable
-from typing import Any, Callable, Optional
+from typing import TYPE_CHECKING, Any, Callable, Optional
 import functools as ft
 import inspect
 
-from rich.console import Console, Group, RenderableType
+from rich.console import Group
 from rich.segment import Segment
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from rich.console import Console, RenderableType
 
 
 def count_parameters(func: Callable) -> int:

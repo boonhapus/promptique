@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 import time
 
 import pydantic
@@ -7,7 +8,9 @@ import rich
 
 from promptique import Menu
 from promptique.prompts import Confirm, Note, Select, Spinner, UserInput
-from promptique.validation import ResponseContext
+
+if TYPE_CHECKING:
+    from promptique.validation import ResponseContext
 
 
 def _sim_sync_work() -> None:

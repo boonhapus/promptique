@@ -1,15 +1,18 @@
 from __future__ import annotations
 
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from rich._loop import loop_first_last
-from rich.console import Console, ConsoleOptions
 from rich.segment import Segment
 from rich.style import Style
 
-from promptique._base import BasePrompt
 from promptique.theme import PromptTheme
-from promptique.types import PromptPosition
+
+if TYPE_CHECKING:
+    from rich.console import Console, ConsoleOptions
+
+    from promptique._base import BasePrompt
+    from promptique.types import PromptPosition
 
 
 class PromptRenderer:

@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-from collections.abc import Iterable
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from rich._loop import loop_first_last
-from rich.console import Console, Group, RenderableType
+from rich.console import Console, Group
 from rich.live import Live
 
 from promptique import _utils
@@ -12,7 +11,13 @@ from promptique._base import BasePrompt
 from promptique.prompts import Note
 from promptique.renderer import PromptRenderer
 from promptique.theme import PromptTheme
-from promptique.types import PromptPosition
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from rich.console import RenderableType
+
+    from promptique.types import PromptPosition
 
 
 class Menu:

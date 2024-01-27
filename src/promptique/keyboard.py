@@ -1,17 +1,20 @@
 from __future__ import annotations
 
-from typing import Any, Callable, Optional
+from typing import TYPE_CHECKING, Any, Callable, Optional
 import asyncio
 import collections
 import datetime as dt
 import functools as ft
 import logging
 
-from prompt_toolkit.input import Input, create_input
+from prompt_toolkit.input import create_input
 from prompt_toolkit.keys import Keys
 import pydantic
 
 from promptique import _utils, keys
+
+if TYPE_CHECKING:
+    from prompt_toolkit.input import Input
 
 log = logging.getLogger(__name__)
 
