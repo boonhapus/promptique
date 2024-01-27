@@ -5,8 +5,14 @@ import time
 import rich
 
 from promptique import Menu
-from promptique.prompts import FileInput, Note, Select, Spinner, UserInput
+from promptique.prompts import FileInput, Select, Spinner, UserInput
 from promptique.prompts.select import PromptOption
+from promptique.validation import response_is
+
+
+def _sim_sync_work(seconds):
+    """Simulate some work."""
+    return lambda: time.sleep(seconds)
 
 
 def main() -> int:
@@ -37,14 +43,22 @@ def main() -> int:
                 ),
             ],
         ),
-        Spinner(prompt="Creating your repository.", rate=5, background=lambda: time.sleep(3)),
-        # Note(),
+        Spinner(prompt="Creating your repository.", rate=5, background=_sim_sync_work(seconds=3)),
     ]
 
     menu = Menu(*prompts, intro="New Repository", outro="Repository setup is complete!")
-    menu["extras"].link(Note(prompt="IGNORE"), validator=lambda ctx: any(o.text == ".gitignore" for o in ctx.response))
-    menu["extras"].link(Note(prompt="README"), validator=lambda ctx: any(o.text == "README.md" for o in ctx.response))
-    menu["extras"].link(Note(prompt="LICENSE"), validator=lambda ctx: any(o.text == "LICENSE" for o in ctx.response))
+    menu["extras"].link(
+        Spinner(prompt="Creating .gitignore..", background=_sim_sync_work(1)),
+        validator=response_is(".gitignore", any_of=True),
+    )
+    menu["extras"].link(
+        Spinner(prompt="Creating README.md..", background=_sim_sync_work(1)),
+        validator=response_is("README.md", any_of=True),
+    )
+    menu["extras"].link(
+        Spinner(prompt="Creating LICENSE..", background=_sim_sync_work(1)),
+        validator=response_is("LICENSE", any_of=True),
+    )
     menu.run()
 
     # Print out all the answers.
