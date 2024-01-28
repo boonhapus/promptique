@@ -115,10 +115,15 @@ class Select(BasePrompt):
 
     def _interact_validate(self, ctx: KeyPressContext) -> None:
         """Validate the prompt choice."""
-        r_ctx = ResponseContext(prompt=self, response=[option for option in self.choices if option.is_selected])
+        try:
+            response_ctx = ResponseContext(prompt=self, response=[opt for opt in self.choices if opt.is_selected])
+            self.selection_validator(response_ctx)
 
-        if self.selection_validator(r_ctx):
-            self._response = r_ctx.response
+        except AssertionError as e:
+            self.warning = str(e)
+
+        else:
+            self._response = response_ctx.response
             ctx.keyboard.simulate(key=keys.ControlC)
 
     def select(self, choice: PromptOption) -> None:

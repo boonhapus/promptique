@@ -61,14 +61,17 @@ class UserInput(BasePrompt):
 
     def _interact_validate(self, ctx: KeyPressContext, *, original_prompt: str) -> None:
         """Simulate input()'s validate on enter."""
-        r_ctx = ResponseContext(prompt=self, response=self.buffer_as_string())
+        try:
+            response_ctx = ResponseContext(prompt=self, response=self.buffer_as_string())
+            self.input_validator(response_ctx)
 
-        if self.input_validator(r_ctx):
-            self.prompt = original_prompt
-            self._response = r_ctx.response
-            ctx.keyboard.simulate(key=keys.ControlC)
+        except AssertionError as e:
+            self.warning = str(e)
+
         else:
-            self._buffer.clear()
+            self.prompt = original_prompt
+            self._response = response_ctx.response
+            ctx.keyboard.simulate(key=keys.ControlC)
 
     def _interact_terminate(self, ctx: KeyPressContext) -> None:
         """Simulate input()'s SIGINT."""
@@ -120,7 +123,8 @@ class FileInput(UserInput):
     _response: Optional[pathlib.Path] = None  # type: ignore[assignment]
 
     def __init__(self, **options):
-        super().__init__(prefill=pathlib.Path().resolve().as_posix(), input_validator=FileInput.is_path_type, **options)
+        options.setdefault("prefill", pathlib.Path().resolve().as_posix())
+        super().__init__(input_validator=FileInput.is_path_type, **options)
         self._update_suggestions()
 
     @staticmethod
@@ -131,13 +135,11 @@ class FileInput(UserInput):
         if not ctx.prompt.exists:
             return True
 
-        if ctx.prompt.path_type == "FILE" and not ctx.response.is_file():
-            ctx.prompt.warning = "Path must be a valid existing File!"
-            return False
+        if ctx.prompt.path_type == "FILE":
+            assert ctx.response.is_file(), "Path must be a valid existing File!"
 
-        if ctx.prompt.path_type == "DIRECTORY" and not ctx.response.is_dir():
-            ctx.prompt.warning = "Path must be a valid existing Directory!"
-            return False
+        if ctx.prompt.path_type == "DIRECTORY":
+            assert ctx.response.is_dir(), "Path must be a valid existing Directory!"
 
         return True
 
@@ -221,11 +223,16 @@ class FileInput(UserInput):
 
     def _interact_validate(self, ctx: KeyPressContext, *, original_prompt: str) -> None:
         """Simulate input()'s validate on enter."""
-        r_ctx = ResponseContext(prompt=self, response=pathlib.Path(self.buffer_as_string()))
+        try:
+            response_ctx = ResponseContext(prompt=self, response=pathlib.Path(self.buffer_as_string()))
+            self.input_validator(response_ctx)
 
-        if self.input_validator(r_ctx):
+        except AssertionError as e:
+            self.warning = str(e)
+
+        else:
             self.prompt = original_prompt
-            self._response = r_ctx.response
+            self._response = response_ctx.response
             self._suggestions = []
             ctx.keyboard.simulate(key=keys.ControlC)
 
