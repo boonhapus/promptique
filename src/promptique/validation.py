@@ -21,6 +21,12 @@ def noop_always_valid(ctx: ResponseContext) -> bool:  # noqa: ARG001
     return True
 
 
+def response_not_null(ctx: ResponseContext) -> bool:
+    """Ensure the input is given."""
+    assert ctx.response, "You must give a response!"
+    return True
+
+
 def response_is(value: Any, *, any_of: bool = False) -> Callable[[ResponseContext], bool]:
     """Compare the response of a Prompt against a given value."""
 
