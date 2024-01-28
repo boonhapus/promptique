@@ -61,7 +61,7 @@ class Key(pydantic.BaseModel, arbitrary_types_allowed=True, frozen=True):
         if len(value) > 1:
             raise ValueError(f"You must provide only single characters, got '{value}'")
 
-        return cls(name=value, data=value)
+        return cls(name=value, data=value, is_printable=True)
 
     @classmethod
     def number(cls, value: Union[str, int]) -> Key:
@@ -71,7 +71,7 @@ class Key(pydantic.BaseModel, arbitrary_types_allowed=True, frozen=True):
         if not value.isdigit() or len(value) > 1:
             raise ValueError(f"You must provide only single numbers, got '{value}'")
 
-        return cls(name=value, data=value)
+        return cls(name=value, data=value, is_printable=True)
 
     # TODO: ..maybe
     # def phrase(cls, value: str) -> Key:
