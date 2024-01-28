@@ -23,10 +23,9 @@ def _is_valid_cc_number(ctx: ResponseContext) -> bool:
     try:
         pydantic.PaymentCardNumber.validate_digits(ctx.response.replace("-", ""))
     except Exception as e:
-        ctx.prompt.warning = str(e)
-        return False
-    else:
-        return True
+        raise AssertionError(e) from None
+
+    return True
 
 
 def main() -> int:

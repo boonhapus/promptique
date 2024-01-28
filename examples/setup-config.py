@@ -7,7 +7,7 @@ import rich
 from promptique import Menu
 from promptique.prompts import FileInput, Select, Spinner, UserInput
 from promptique.prompts.select import PromptOption
-from promptique.validation import response_is
+from promptique.validation import response_is, response_not_null
 
 
 def _sim_sync_work(seconds):
@@ -20,8 +20,13 @@ def main() -> int:
     rich.print("\n")
 
     prompts = [
-        UserInput(id="name", prompt="Repository name", detail="Great repository names are short and memorable."),
-        FileInput(id="root", prompt="Where should we create your new project?", path_type="DIRECTORY", exists=False),
+        UserInput(
+            id="name",
+            prompt="Repository name",
+            detail="Great repository names are short and memorable.",
+            input_validator=response_not_null,
+        ),
+        FileInput(id="root", prompt="Where should we create your new project?", path_type="DIRECTORY", exist=False),
         Select(id="privacy", prompt="Which type of Privacy?", mode="SINGLE", choices=["Public", "Private"]),
         Select(
             id="extras",
