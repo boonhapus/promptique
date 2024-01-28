@@ -53,6 +53,9 @@ class Menu:
             vertical_overflow="visible",
         )
 
+    def __contains__(self, prompt_id: str) -> bool:
+        return next((True for prompt in self.prompts if prompt.id == prompt_id), False)
+
     def __getitem__(self, prompt_id: str) -> BasePrompt:
         try:
             return next(prompt for prompt in self.prompts if prompt.id == prompt_id)
