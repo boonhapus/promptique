@@ -42,7 +42,7 @@ def main() -> int:
         Confirm(id="cheese", prompt="Do you want extra cheese?", default="No"),
         Select(
             id="toppings",
-            prompt="Select your pizza size",
+            prompt="Do you wany any additional toppings?",
             choices=["Pepperoni", "Sausage", "Ham", "Chicken", "Bell Peppers", "Onion", "Pineapple"],
             mode="MULTI",
         ),
