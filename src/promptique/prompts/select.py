@@ -68,12 +68,12 @@ class Select(BasePrompt):
         return data
 
     @pydantic.model_validator(mode="after")
-    def _force_at_least_one_selection(self):
+    def _determine_focused_element(self):
         try:
             self._focused = next(choice for choice in self.choices if choice.is_selected)
         except StopIteration:
             self._focused = self.choices[0]
-            self._focused.is_selected = True
+            self._focused.is_selected = True if self.mode == "SINGLE" else False
 
     def _interact_focus(self, ctx: KeyPressContext) -> None:
         """Move to the next/previous option under focus."""
